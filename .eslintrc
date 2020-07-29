@@ -2,7 +2,8 @@
   "env": {
     "es6": true,
     "browser": true,
-    "node": true
+    "node": true,
+    "jest/globals": true
   },
   "globals": {
     "ENV": true
@@ -17,5 +18,6 @@
   },
   "extends": "airbnb",
   "rules": {
-  }
+  },
+  "plugins": ["jest"]
 }
