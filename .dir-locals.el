@@ -1,1 +1,2 @@
-((css-mode (css-indent-offset . 2)))
+((nil . ((create-lockfiles . nil)))
+ (css-mode (css-indent-offset . 2)))
