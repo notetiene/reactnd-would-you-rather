@@ -18,6 +18,7 @@
   },
   "extends": "airbnb",
   "rules": {
+    "react/jsx-fragments": 0
   },
   "plugins": ["jest"]
 }
