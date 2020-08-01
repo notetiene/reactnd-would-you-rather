@@ -1,0 +1,136 @@
+#+title: Udacity ReactND Would You Rather Project Notes
+#+author: Etienne Prud’homme
+#+descrition: Second Udacity React Nano Degree project
+#+keywords: react, redux
+#+filetags: Udacity ReactND
+
+* Would You Rather Project
+
+  Would you rather is a web application that includes simple polls made
+  by its users.  The form of the polls are as follow:
+
+#+begin_quote
+Would you rather [option A] or [option B]?
+#+end_quote
+
+
+** Overview
+*** Goals of this project
+
+ * Better understanding of React and Redux
+ * Practice improving predictability of the application’s state
+ * Establishing strict rules for interacting with the store
+ * Identify which state should live in Redux
+ * Identify which state should live in React components
+
+*** Starter code
+    The starter code consists of a =_DATA.js= file which contains a
+    fake database and functions to interact with it.
+
+** App functionality
+*** TODO Impersonating
+    There should be a way to impersonate a existing user.
+**** TODO Allow log in and log out
+**** TODO On log in, show home page
+**** TODO Current user should be shown
+*** TODO Permissions
+**** TODO User must be logged-in to show pages
+
+     If someone tries to navigate anywhere by entering the address in
+     the address bar, the user *is asked to sign in* and then the
+     requested page is shown.
+
+*** TODO Home page
+#+caption: Question page
+[[file:images/home_page.png]]
+**** TODO Located at the root ~/~
+**** TODO Show answered and unanswered questions
+     There should two tabs.
+***** TODO Unanswered questions shown by default
+**** TODO Show in order
+     Show most recent (top) to least recent (bottom).
+**** TODO A poll can be clicked
+     When clicking on the poll, show the poll page.
+
+*** TODO Question page
+**** TODO Located at ~/questions/:question_id~
+     Where =:question_id= is the id of the poll/question.
+**** TODO Show content
+***** Unanswered question
+#+caption: Question page (unanswered)
+[[file:images/question_page_unanswered.png]]
+
+The unanswered question must contain:
+ * [ ] The text =Would you rather=
+ * [ ] Avatar of the user who posted the question
+ * [ ] Two options
+
+****** When voting
+ * [ ] The answer must be recorded
+ * [ ] All the information about the question should be displayed
+   (answered question)
+ * [ ] Users can only vote once and cannot change their answer
+ * [ ] When the user comes back to the home page, the question should
+   be in the answered section
+
+***** Answered question
+#+caption: Question page (unanswered)
+[[file:images/question_page_answered.png]]
+
+The answered question must contain:
+ * [ ] Text of the option
+ * [ ] Number of people who voted for that option
+ * [ ] Percentage of people who voted for that option
+ * [ ] The option the logged-in user choose
+
+**** TODO Show error if poll doesn’t exist
+     Show an error page (404) if the poll doesn’t exist.
+*** TODO New question page
+**** TODO Located at ~/add~
+**** TODO Show content
+The page must contain:
+ * [ ] The text =Would You Rather=
+ * [ ] A form of two options
+
+The page should:
+ * [ ] Have indication that the input are required
+ * [ ] Have a button submit button that is disabled when the two input are
+   not correct, but becomes enabled when the form is correct
+ * [ ] Submit the answer when pressing enter
+ * [ ] Both input should not be empty or with white space only
+
+**** TODO Handle new question
+ * [ ] The new question should appear in the correct category on the
+   home page
+*** TODO Leaderboard
+**** TODO Located at ~/leaderboard~
+**** TODO Show content
+The list of users and the following:
+ * [ ] User’s name
+ * [ ] User’s avatar
+ * [ ] Number of question the user asked
+ * [ ] Number of question the user answered
+ * [ ] Sorted by their score (questions + answers)
+
+It should contain the following:
+ * [ ] Sum of score
+ * [ ] Trophies based on score
+   * [ ] No trophy if max score is zero
+
+*** TODO Navbar
+    Add a navbar to navigate between:
+
+ * [ ] Home page
+ * [ ] New question page
+ * [ ] Leader board
+ * [ ] Log in or Log out
+** App architecture
+*** Most state should be managed by Redux
+Read: [[https://github.com/reactjs/redux/issues/1287][choosing between Redux’s store and React’s state]]
+
+*** The store is the single source of truth
+**** Components should reference to Redux
+**** No direct API call in component’s lifecycle methods
+     Updates should be triggered by dispatching action creators.
+*** Application should be structured
+*** Components should be modular and resusable
