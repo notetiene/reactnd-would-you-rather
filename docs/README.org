@@ -3,6 +3,7 @@
 #+descrition: Second Udacity React Nano Degree project
 #+keywords: react, redux
 #+filetags: Udacity ReactND
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup
 
 * Would You Rather Project
 
