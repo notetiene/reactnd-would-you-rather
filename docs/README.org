@@ -438,3 +438,139 @@ must use a compone that will provide that behaviour.
 #+RESULTS:
 [[file:images/routes_to_components_behaviour.png]]
 
+*** =Home= Component
+The =Home= component will provide two list of questions:
+ - Unanswered questions
+ - Answered questions
+
+Two tabs will be used while showing unanswered questions by default.
+This behaviour will be included in the =QuestionList= component.
+
+**** Overview
+#+caption: Mockup of =Home= component
+#+RESULTS:
+[[file:images/home_overview.png]]
+
+This is the view of the =home= component.
+
+1. is a =Question= component
+2. is a =Tab.Menu= component
+3. is the =Tab.Segment= component
+4. is a =QuestionExcerpt= component
+
+**** Data of =Home=
+This component will be a connected component to the Redux store.  The
+following state properties will be used for mapping:
+ - =questions=
+ - =authedUser=
+
+The properties mapped will be the following:
+ - =answeredQuestions=
+   - Obtained by filtering =questions= the current =authedUser= has
+     answered and returning the question’s ID property.
+ - =unansweredQuestions=
+   - Obtained by filtering =questions= the current =authedUser= has
+     not answered and returning the question’s ID property.
+
+#+begin_src plantuml :file images/home_component_data.png
+  skinparam {
+      titleBorderRoundCorner 15
+      titleBorderThickness 2
+      titleBorderColor black
+      handwritten true
+      shadowing true
+      defaultMonospacedFontName Courier
+      ArrowColor Olive
+  }
+
+  title =Data of component: ""Home""
+  left to right direction
+
+  class Home {
+      == Connected Props ==
+      questionIDList : answeredQuestions
+      ..
+      questionIDList: unansweredQuestions
+  }
+#+end_src
+#+caption: Data of Home component
+#+RESULTS:
+[[file:images/home_component_data.png]]
+
+***** =Questions= mapping operations
+The =answeredQuestions= will be calculated by first transforming the
+=questions= object to a list.  The given list will be filtered by the
+predicate that the =authedUser= is included in one of the two options
+of the question.  The remaining list will only return the question
+IDs.
+
+Likewise =unansweredQuestions= will be calculated by first
+transforming the =questions= object to a list.  The given list will be
+filtered by the predicate that the =authedUser= is *not* included in
+one of the two options of the question.  The remaining list will only
+return the question IDs
+
+#+caption: Mapped state properties to the =Home= component properties
+#+begin_src js
+  function mapStateToProps({ questions, authedUser }) {
+    const answeredQuestions = Object.values(questions)
+          .filter((question) => question.optionOne.votes.includes(authedUser)
+                  || question.optionTwo.votes.includes(authedUser))
+          .map((question) => question.id);
+    const unansweredQuestions = Object.values(questions)
+      .filter((question) => !question.optionOne.votes.includes(authedUser)
+              && !question.optionTwo.votes.includes(authedUser))
+      .map((question) => question.id);
+    return {
+      answeredQuestions,
+      unansweredQuestions,
+    };
+  }
+#+end_src
+
+**** Tree of =Home=
+The following components components will be children of =Home=
+ - =Body= for layout
+   - =QuestionList= to show answered and unanswered questions.  Both
+     properties passed to the component will be a list of question IDs
+     as string
+
+#+begin_src plantuml :file images/home_component_structure.png
+  skinparam {
+      titleBorderRoundCorner 15
+      titleBorderThickness 2
+      titleBorderColor black
+      handwritten true
+      shadowing true
+      defaultMonospacedFontName Courier
+      ArrowColor Olive
+  }
+
+  title =Tree structure of component: ""Home""
+  left to right direction
+
+  rectangle Home [
+  ""**Home**""
+  ]
+  rectangle Body [
+  ""**Body**""
+  ]
+  rectangle QuestionList [
+  ""**QuestionList**""
+  ==
+  === Passed Props:
+  ..
+  ""unansweredQuestions""
+  <size:13>List of unanswered question ids
+  ..
+  ""answeredQuestions""
+  <size:13>List of answered question ids
+  ]
+
+  Home --> Body
+  Body --> QuestionList
+#+end_src
+#+caption: Structure of Home component
+#+RESULTS:
+[[file:images/home_component_structure.png]]
+
