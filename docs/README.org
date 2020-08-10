@@ -144,9 +144,7 @@ skinparam {
     titleBorderColor black
     handwritten true
     shadowing true
-    usecase {
-        ArrowColor Olive
-    }
+    ArrowColor Olive
 }
 left to right direction
 
@@ -183,9 +181,7 @@ The store contains 3 main properties.
       titleBorderColor black
       handwritten true
       shadowing true
-      usecase {
-          ArrowColor Olive
-      }
+      ArrowColor Olive
   }
 
   title =Structure of <u>users</u> object
@@ -229,9 +225,7 @@ The store contains 3 main properties.
       titleBorderColor black
       handwritten true
       shadowing true
-      usecase {
-          ArrowColor Olive
-      }
+      ArrowColor Olive
   }
 
   title =Structure of <u>questions</u> object
@@ -288,9 +282,7 @@ The store contains 3 main properties.
       titleBorderColor black
       handwritten true
       shadowing true
-      usecase {
-          ArrowColor Olive
-      }
+      ArrowColor Olive
   }
 
   title =Structure of <i>App</i> <u>components</u>
@@ -326,9 +318,7 @@ The store contains 3 main properties.
       titleBorderColor black
       handwritten true
       shadowing true
-      usecase {
-          ArrowColor Olive
-      }
+      ArrowColor Olive
   }
 
   title =Structure of <i>routes</i>
