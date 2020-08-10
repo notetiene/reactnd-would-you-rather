@@ -1074,3 +1074,140 @@ The properties mapped will be the following:
 #+RESULTS:
 [[file:images/signin_component_data.png]]
 
+*** =Question= Component
+The =Question= component will display a given question in two form:
+ - Answered question where votes are shown
+ - Unanswered question where the user has to choose between two
+   options
+
+When the given question doesn’t exist, it will redirect to the
+=PageNotFound= page.
+
+**** Unanswered question
+***** Overview
+#+caption: Mockup of an unanswered question
+#+RESULTS:
+[[file:images/question_unanswered_overview.png]]
+
+1. is a =QuestionChoice= component
+2. is a =QuestionCard= component
+3. is an =h3= element
+4. is an =OptionChoice= component
+
+**** Answered question
+***** Overview
+#+caption: Mockup of an answered question
+#+RESULTS:
+[[file:images/question_answered_overview.png]]
+
+1. is an =AnsweredQuestion= component
+2. is a =QuestionCard= component
+3. is a =PollResults= component
+
+**** Data of =Question=
+The properties mapped will be the following:
+ - =authedUser=
+   - The same value as in store
+
+#+begin_src plantuml :file images/question_component_data.png
+  skinparam {
+      titleBorderRoundCorner 15
+      titleBorderThickness 2
+      titleBorderColor black
+      handwritten true
+      shadowing true
+      defaultMonospacedFontName Courier
+  }
+
+  title =Data of component: ""Question""
+  left to right direction
+
+  class Question {
+      == Connected Props ==
+      string : choice
+      string : id
+      bool : questionNotFound = false
+  }
+#+end_src
+#+caption: Data of =SignIn= component
+#+RESULTS:
+[[file:images/question_component_data.png]]
+***** =Question= mapping operations
+The =id= property is given by =match.params.id= provided by
+=connected-react-router=.
+
+The =questionNotFound= property will be calculated by checking if the
+question ID as peroperty to the =questions= object returns undefined.
+If that is the case, nothing else needs to be done (return
+immediately).
+
+The =choice= property will be calculated by checking if the
+=authedUser= is included in the =optionOne= or =optionTwo= list of
+votes. ='a'= for the first and ='b'= for the latter.
+
+#+begin_src js
+function mapStateToProps({ questions, authedUser }, { match }) {
+  const { id } = match.params;
+
+  if (questions[id] === undefined) {
+    return {
+      id,
+      questionNotFound: true,
+    };
+  }
+
+  const {
+    optionOne,
+    optionTwo,
+  } = questions[id];
+  const choice = (optionOne.votes.includes(authedUser) && 'a')
+        || (optionTwo.votes.includes(authedUser) && 'b');
+
+  return {
+    choice,
+    id,
+  };
+}
+#+end_src
+
+**** Behaviour of =Question=
+First, if the question is not found, the user is redirected to
+=PageNotFound=.
+
+If the user had a choice recorded, it means she already voted on the
+question.  Therefore, the the poll results =AnsweredQuestion= will be
+displayed.
+
+Otherwise, the user is shown with form =QuestionChoice= that she may
+give a vote.
+
+#+begin_src js
+function Question({
+  id,
+  choice,
+  questionNotFound,
+}) {
+  if (questionNotFound) {
+    return <PageNotFound />;
+  }
+
+  return (
+    <LoginRequired>
+      <Body>
+        {(choice && (
+          <AnsweredQuestion
+            id={id}
+            choice={choice}
+          />
+        ))
+         || (
+           <QuestionChoice
+             id={id}
+           />
+         )}
+      </Body>
+    </LoginRequired>
+  );
+}
+#+end_src
+
