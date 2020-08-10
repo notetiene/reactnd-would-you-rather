@@ -280,3 +280,41 @@ The store contains 3 main properties.
 #+RESULTS:
 [[file:images/questions_structure.png]]
 
+*** App Components structure
+#+begin_src plantuml :file images/app_components_structure.png
+  skinparam {
+      titleBorderRoundCorner 15
+      titleBorderThickness 2
+      titleBorderColor black
+      handwritten true
+      shadowing true
+      usecase {
+          ArrowColor Olive
+      }
+  }
+
+  title =Structure of <i>App</i> <u>components</u>
+  left to right direction
+
+  rectangle React {
+      rectangle PersistGate
+      rectangle App
+      rectangle ConnectedRouter
+      rectangle Container as Container
+      rectangle NavBar
+      rectangle Routes [
+          routes
+      ]
+
+      PersistGate --> App : (for Redux persistance)
+      App --> ConnectedRouter
+      ConnectedRouter --> Container
+      Container --> NavBar
+      Container --> Routes
+  }
+#+end_src
+
+#+caption: App Components structure
+#+RESULTS:
+[[file:images/app_components_structure.png]]
+
