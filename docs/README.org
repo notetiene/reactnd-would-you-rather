@@ -1405,3 +1405,101 @@ be imported from =configureStore= in order to pass it to the =App=
 component.
 
 Last, =Provider= from =react-redux= will be imported.
+** Action creators
+*** authedUser
+=authedUser= will contain two action creators.
+
+ * =setAuthedUser= that will take an ID and set the current user to
+   the new user.
+ * =signOut= to sign-out the user.
+
+#+begin_src js
+export const SET_AUTHED_USER = 'SET_AUTHED_USER';
+export const SIGNOUT_AUTHED_USER = 'SIGNOUT_AUTHED_USER';
+
+export function setAuthedUser(id) {
+  return {
+    type: SET_AUTHED_USER,
+    id,
+  };
+}
+
+export function signOut() {
+  return {
+    type: SIGNOUT_AUTHED_USER,
+  };
+}
+#+end_src
+
+*** users
+=users= will contain only one action creator.
+
+ * =receiveUsers= to receive the list of users.
+
+#+begin_src js
+export const RECEIVE_USERS = 'RECEIVE_USERS';
+
+export function receiveUsers(users) {
+  return {
+    type: RECEIVE_USERS,
+    users,
+  };
+}
+#+end_src
+
+*** questions
+=questions= will contain three action creators.
+
+ * =receiveQuestions= to receive the initial data.
+ * =answerQuestion= to answer a given question.
+ * =addQuestion= to add a new question.
+
+#+begin_src js
+export const RECEIVE_QUESTIONS = 'RECEIVE_QUESTIONS';
+export const ANSWER_QUESTION = 'ANSWER_QUESTION';
+export const ADD_NEW_QUESTION = 'ADD_NEW_QUESTION';
+
+export function receiveQuestions(questions) {
+  return {
+    type: RECEIVE_QUESTIONS,
+    questions,
+  };
+}
+
+export function answerQuestion(info) {
+  return {
+    type: ANSWER_QUESTION,
+    info,
+  };
+}
+
+export function addQuestion(indo) {
+  return {
+    type: ADD_NEW_QUESTION,
+    info,
+  };
+}
+#+end_src
+
+
+*** shared
+In order to handle the initial data, a shared file will be created
+containing all the action creators for initialization.
+
+#+begin_src js
+import { getInitialData } from '../util/api';
+import {
+  receiveUsers,
+} from './users';
+import {
+  receiveQuestions,
+} from './questions';
+
+export default function handleInitialData() {
+  return (dispatch) => getInitialData()
+    .then(({ users, questions }) => {
+      dispatch(receiveUsers(users));
+      dispatch(receiveQuestions(questions));
+    });
+}
+#+end_src
