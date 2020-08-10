@@ -1306,3 +1306,102 @@ The following components components will be children of =PageNotFound=
 #+caption: Structure of PageNotFound component
 #+RESULTS:
 [[file:images/pagenotfound_component_structure.png]]
+
+** Store setup
+In order to setup the store, a new file will be used to initialize the
+Redux store.
+
+The =createBrowserHistory= function will be imported from the
+=history= package.
+
+The =persistStore= and =persistReducer= will be imported from
+=redux-persist= in order to support persistence.  Also, =storage= will
+be imported (for =localStorage=) from the same package.
+
+*** Reducers
+A new file containing all the reducers will be created at
+=./reducers/index.js= in order to import all the reducer.  A single
+root reducer will be exported.
+
+#+begin_src js
+import { combineReducers } from 'redux';
+import { connectRouter } from 'connected-react-router';
+import authedUser from './authedUser';
+import users from './users';
+import questions from './questions';
+
+export default (history) => combineReducers({
+  authedUser,
+  users,
+  questions,
+  router: connectRouter(history),
+});
+#+end_src
+
+The new exported root reducer will be a factory function that takes
+the history as argument.  =persistReducer= will be used to create
+reducer persistence.
+
+*** Middlewares
+A new file containing all the middlewares (or enhancers) will be
+created at =./middleware/index.js= in order to support the router
+middleware.
+
+#+begin_src js
+import { applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import { routerMiddleware } from 'connected-react-router';
+import thunk from 'redux-thunk';
+
+const composeEnhancers = composeWithDevTools({
+  trace: true,
+  traceLimit: 25,
+});
+export default (history) => composeEnhancers(
+  applyMiddleware(
+    routerMiddleware(history),
+    thunk,
+  ),
+);
+#+end_src
+
+*** =configureStore.js=
+#+begin_src js
+import { createBrowserHistory } from 'history';
+import { createStore } from 'redux';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
+import createRootReducer from './reducers';
+import createMiddlewares from './middleware';
+
+export const history = createBrowserHistory();
+const persistConfig = {
+  key: 'root',
+  storage,
+};
+
+const rootReducer = createRootReducer(history);
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export default function configureStore(preloadedState) {
+  const store = createStore(
+    persistedReducer,
+    preloadedState,
+    createMiddlewares(history),
+  );
+  const persistor = persistStore(store);
+
+  return {
+    store,
+    persistor,
+  };
+}
+#+end_src
+
+** Main entry file (=index.js=)
+The main entry file will make use of the =configureStore= function.
+It will also make use of the =PersistGate= component.  =history= must
+be imported from =configureStore= in order to pass it to the =App=
+component.
+
+Last, =Provider= from =react-redux= will be imported.
