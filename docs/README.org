@@ -356,3 +356,85 @@ The store contains 3 main properties.
 #+RESULTS:
 [[file:images/routes_structure.png]]
 
+**** Behaviour of routed component
+The list of routed components is the following:
+ - =Home=
+   - Login is required to view the page
+     - Otherwise redirect to SignIn
+ - =Leaderboard=
+   - Login is required to view the page
+     - Otherwise redirect to =SignIn=
+ - =NewQuestion=
+   - Login is required to view the page
+     - Otherwise redirect to SignIn
+ - =Question=
+   - Login is required to view the page
+     - Otherwise redirect to =SignIn=
+   - When the matched URL contains an invalid question, redirect to
+     =PageNotFound=
+ - =User=
+   - Login is required to view the page
+     - Otherwise redirect to =SignIn=
+   - When the matched URL contains an invalid user, redirect to
+     =PageNotFound=
+ - =SignIn=
+ - =PageNotFound=
+
+Since many pages (or component) require the user to be logged-in, we
+must use a compone that will provide that behaviour.
+
+#+begin_src plantuml :file images/routes_to_components_behaviour.png
+  skinparam {
+      titleBorderRoundCorner 15
+
+      titleBorderThickness 2
+      titleBorderColor black
+      handwritten true
+      shadowing true
+      defaultMonospacedFontName Courier
+      ArrowColor Olive
+  }
+
+  title =Behaviour of <i>routed</i> <u>components</u>
+  left to right direction
+
+  rectangle "Directory tree: <font:Courier>src/components/layout/" as Struct {
+      rectangle Home [
+      ""**Home**""
+      ]
+      rectangle Leaderboard [
+      ""**Leaderboard**""
+      ]
+      rectangle NewQuestion [
+      ""**NewQuestion**""
+      ]
+      rectangle Question [
+      ""**Question**""
+      ]
+      rectangle User [
+      ""**User**""
+      ]
+      rectangle SignIn [
+      ""**SignIn**""
+      ]
+      rectangle PageNotFound [
+      ""**PageNotFound**""
+      ]
+
+      Question -|> PageNotFound : when question doesn’t exist
+      User -|> PageNotFound : when user doesn’t exist
+  }
+
+  rectangle "Login is required" as LoginRequired
+  Home --|> LoginRequired
+  Leaderboard --|> LoginRequired
+  NewQuestion --|> LoginRequired
+  Question --|> LoginRequired
+  User --|> LoginRequired
+
+  LoginRequired --> SignIn : redirects to
+#+end_src
+#+caption: Behaviour of routed components
+#+RESULTS:
+[[file:images/routes_to_components_behaviour.png]]
+
