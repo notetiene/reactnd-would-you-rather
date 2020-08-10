@@ -1211,3 +1211,98 @@ function Question({
 }
 #+end_src
 
+*** =User= Component
+The =User= component will display a given user.
+
+*** =PageNotFound= Component
+The =PageNotFound= component will display an error message when a
+route doesn’t exist.  This component will be a connected component to
+the Redux store.  The following state properties will be used for
+mapping:
+ - =authedUser=
+
+It will be used to display a message with the user ID.
+
+The following message will be displayed:
+
+#+begin_quote
+Hi $USERID!
+
+I’ve been expecting you
+
+ - It may be because you’re lost
+ - Or that the page moved somewhere else
+ - BUT things aren’t broken, okay?
+#+end_quote
+
+**** Tree of =PageNotFound=
+The following components components will be children of =PageNotFound=
+ - =Body= for layout
+   - =Message= for displaying a custom error message
+     - =Icon= This will be the ~bug~ icon with a =loading= property.
+       The loading property adds an animation to it
+     - =Message.Content= for wrapping the message inside a block
+       - =Message.Header= for displaying the message header
+       - =p= for displaying a message
+       - =Message.List= for adding an unordered list
+         - Multiple =Message.Item= displaying funny messages
+
+#+begin_src plantuml :file images/pagenotfound_component_structure.png
+  skinparam {
+      titleBorderRoundCorner 15
+      titleBorderThickness 2
+      titleBorderColor black
+      handwritten true
+      shadowing true
+      defaultMonospacedFontName Courier
+      ArrowColor Olive
+  }
+
+  title =Tree structure of component: ""PageNotFound""
+  left to right direction
+
+  rectangle PageNotFound [
+  ""**Home**""
+  ]
+  rectangle Body [
+  ""**Body**""
+  ]
+  rectangle Message [
+  ""**Message**""
+  ]
+  rectangle Message.Content [
+  ""**Message.Content**""
+  ]
+  rectangle Message.Header [
+  ""**Message.Header**""
+  ]
+  rectangle p [
+  ""**p**""
+  ]
+  rectangle Message.List [
+  ""**Message.List**""
+  ]
+  rectangle Message.Item1 [
+  ""**Message.Item**""
+  ]
+  rectangle Message.Item2 [
+  ""**...**""
+  ]
+  rectangle Message.Item3 [
+  ""**Message.Item**""
+  ]
+
+
+  PageNotFound -> Body
+  Body -> Message
+  Message --> Message.Content
+  Message.Content --> Message.Header
+  Message.Content --> p
+  Message.Content --> Message.List
+  Message.List --> Message.Item1
+  Message.List --> Message.Item2
+  Message.List --> Message.Item3
+#+end_src
+#+caption: Structure of PageNotFound component
+#+RESULTS:
+[[file:images/pagenotfound_component_structure.png]]
