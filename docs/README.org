@@ -745,3 +745,183 @@ The following components components will be children of =Leaderboard=
 #+RESULTS:
 [[file:images/leaderboard_component_structure.png]]
 
+*** =NewQuestion= Component
+The =NewQuestion= component will contain a form of two field to post a
+new ~would you rather~ question.  Unless both text input are not void
+(excluding blank chars), the submit button will not work.
+
+The component will be a class component in order to use /React/ state.
+Both input will be controlled by the component.
+**** Overview
+#+caption: Mockup of =NewQuestion= component
+#+RESULTS:
+[[file:images/newquestion_overview.png]]
+
+This is the view of the =NewQuestion= component.
+
+1. is a =Body= component
+2. is a =OptionOrOptionForm= component
+3. is a =OptionTextInput= that is part of =OptionOrOptionForm=
+
+**** Data of =NewQuestion=
+The component will be a connected component to make use of the
+=dispatch= function.
+
+The properties mapped (as =mapDispatchToProps=) will be the following:
+ - =push=
+   - an action creator to redirect the user to the home page
+
+The component will contain two state member
+ - =option1=
+   - A =string= to capture the first option the user entered.  This
+     means this component will control an input down the tree.
+ - =option2=
+   - An other =string= to capture the second option.  Also controlling
+     an input.
+
+#+begin_src plantuml :file images/newquestion_component_data.png
+  skinparam {
+      titleBorderRoundCorner 15
+      titleBorderThickness 2
+      titleBorderColor black
+      handwritten true
+      shadowing true
+      defaultMonospacedFontName Courier
+      ArrowColor Olive
+  }
+
+  title =Data of component: ""NewQuestion""
+  left to right direction
+
+  class NewQuestion {
+      + NewQuestion : constructor()
+      - void : handleOptionOneChange(event)
+      - void : handleOptionTwoChange(event)
+      - bool : isValidQuestion()
+      == State props ==
+      - string : option1
+      - string : option2
+      == Connected Props ==
+      - Function : push
+  }
+#+end_src
+
+#+caption: Data of =NewQuestion= component
+#+RESULTS:
+[[file:images/newquestion_component_data.png]]
+
+**** Behaviour of =NewQuestion=
+The component will contain member functions to manage its behaviour:
+ - =handleOptionOneChange=: to handle the input change.  This really
+   means, controlling an input component
+ - =handleOptionTwoChange=: same as the preceding function but for the
+   second option
+ - =isValidQuestion=: a predicate to check that both =option1= and
+   =option2= are not empty when applying the =String.prototype.trim=
+   method on them
+
+#+caption: Behaviour of =NewQuestion= component
+#+begin_src js
+  class NewQuestion extends Component {
+    constructor(...args) {
+      super(...args);
+
+      this.state = {
+        option1: '',
+        option2: '',
+      };
+    }
+
+    handleOptionOneChange = (ev) => {
+      const { value } = ev.target;
+
+      this.setState(() => ({
+        option1: value,
+      }));
+    }
+
+    handleOptionTwoChange = (ev) => {
+      const { value } = ev.target;
+
+      this.setState(() => ({
+        option2: value,
+      }));
+    }
+
+    isValidQuestion = () => {
+      const {
+        option1,
+        option2,
+      } = this.state;
+
+      return option1.trim() !== '' && option2.trim() !== '';
+    }
+    render() {
+      // Render method
+    }
+  }
+#+end_src
+
+**** Tree of =NewQuestion=
+The following components components will be children of =NewQuestion=
+ - =LoginRequired= for authentication
+   - =Body= for layout
+     - =OptionOrOptionForm= containing the form.  An options property
+       will be passed to the =OptionOrOptionForm= component containing
+       option one and option two.
+
+#+begin_src plantuml :file images/newquestion_component_structure.png
+  skinparam {
+      titleBorderRoundCorner 15
+      titleBorderThickness 2
+      titleBorderColor black
+      handwritten true
+      shadowing true
+      defaultMonospacedFontName Courier
+      ArrowColor Olive
+  }
+
+  title =Tree structure of component: ""NewQuestion""
+  left to right direction
+
+  rectangle Home [
+  ""**NewQuestion**""
+  ]
+  rectangle Body [
+  ""**Body**""
+  ]
+  rectangle OptionOrOptionForm [
+  ""**OptionOrOptionForm**""
+  ==
+  === Passed Props:
+  ..
+  ""string"" : ""title""<size:13> = “Create New Question”
+  ..
+  ""string"" : ""subtitle""<size:13> = “Would you rather …”
+  ..
+  ""Option[]"" : ""options""
+  <size:13>List of options
+  ..
+  ""function"" : ""isValidForm""
+  <size:13>Predicate to test if it’s a valid form
+  ..
+  ""function"" : ""onSubmit""
+  <size:13>Callback for form submission
+  ]
+
+  class Option {
+      ""string : placeholder""
+      ""string : value""
+      ""function : onChange""
+      ""string : key""
+  }
+
+  Option --* OptionOrOptionForm
+  Home --> Body
+  Body --> OptionOrOptionForm
+#+end_src
+
+#+caption: Structure of =NewQuestion= component
+#+RESULTS:
+[[file:images/newquestion_component_structure.png]]
+
