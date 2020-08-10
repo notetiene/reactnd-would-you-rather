@@ -318,3 +318,51 @@ The store contains 3 main properties.
 #+RESULTS:
 [[file:images/app_components_structure.png]]
 
+*** Routed Components Structure
+#+begin_src plantuml :file images/routes_structure.png
+  skinparam {
+      titleBorderRoundCorner 15
+      titleBorderThickness 2
+      titleBorderColor black
+      handwritten true
+      shadowing true
+      usecase {
+          ArrowColor Olive
+      }
+  }
+
+  title =Structure of <i>routes</i>
+  left to right direction
+
+  rectangle App {
+      rectangle routes {
+          rectangle Home
+          rectangle Leaderboard
+          rectangle NewQuestion
+          rectangle Question
+          rectangle SignIn
+          rectangle User
+          rectangle PageNotFound
+
+          cloud "/" as home
+          cloud "/leaderboard" as leaderboard
+          cloud "/add" as newquestion
+          cloud "/signin" as signin
+          cloud "/question::id" as question
+          cloud "/user::id" as user
+          cloud "/" as pagenotfound
+
+          home --> Home : exact match
+          leaderboard --> Leaderboard : exact match
+          newquestion --> NewQuestion : exact match
+          signin --> SignIn : exact match
+          question ..> Question : matches /user:‘id’
+          user ..> User : matches /question:‘id’
+          pagenotfound ..> PageNotFound : matches anything else
+      }
+  }
+#+end_src
+#+caption: Structure of routes
+#+RESULTS:
+[[file:images/routes_structure.png]]
+
