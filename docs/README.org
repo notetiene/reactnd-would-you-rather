@@ -574,3 +574,174 @@ The following components components will be children of =Home=
 #+RESULTS:
 [[file:images/home_component_structure.png]]
 
+*** =Leaderboard= Component
+The =Leaderboard= component will contain a list of users sorted by
+their rank.  Each user will be clickable to show their page.
+
+**** Overview
+#+caption: Mockup of =Leaderboard= component
+#+RESULTS:
+[[file:images/leaderboard_overview.png]]
+
+This is the view of the =Leaderboard= component.
+
+ 1. will be a =UserCard= component
+ 2. will be a =ScoreTable= component
+ 3. will be a =RankLabel= component
+ 4. will be a =UserScore= component
+ 5. might be a =UserAvatar= component
+
+**** Data of =Leaderboard=
+This component will be a connected component to the Redux store.  The
+following state properties will be used for mapping:
+ - =questions=
+ - =users=
+
+The properties mapped will be the following:
+ - users
+   - Obtained by sorting the users by their score (generated in the
+     mapping function) and a corresponding rank will be added.
+
+#+begin_src plantuml :file images/leaderboard_component_data.png
+  skinparam {
+      titleBorderRoundCorner 15
+      titleBorderThickness 2
+      titleBorderColor black
+      handwritten true
+      shadowing true
+      defaultMonospacedFontName Courier
+      ArrowColor Olive
+  }
+
+  title =Data of component: ""Leaderboard""
+  left to right direction
+
+  class Leaderboard {
+      == Connected Props ==
+      UsersObject : users
+  }
+#+end_src
+#+caption: Data of =Leaderboard= component
+#+RESULTS:
+[[file:images/leaderboard_component_data.png]]
+
+***** =Leaderboard= mapping operations
+First, the =users= object will be transformed to a list from the
+object’s values.  This allows sorting users more easily.
+
+In order to calculate the score for each user, the number of answered
+questions and asked questions will be calculated.  The score is both
+numbers added.  Both numbers can be calculated by looking into the
+=questions= object.
+
+While sorting the users by their newly added score (by spreading the
+user with the score), generate a new set containing all the scores
+sorted.  By converting the new set to a list, we can lookup the rank
+of each user score.
+
+The scores will be added to the users list.
+
+#+caption: Mapped state properties to the =Leaderboard= component properties
+#+begin_src js
+  function userScore(userID, questions) {
+    const createdQuestions = questions.reduce(
+      (accumulator, question) => (accumulator + (question.author === userID ? 1 : 0)),
+      0,
+    );
+    const answeredQuestions = questions.reduce(
+      (accumulator, question) => {
+        const answered = question.optionOne.votes.includes(userID)
+              || question.optionTwo.votes.includes(userID);
+
+        return accumulator + answered;
+      },
+      0,
+    );
+
+    return {
+      answeredQuestions,
+      createdQuestions,
+      score: answeredQuestions + createdQuestions,
+    };
+  }
+  function mapStateToProps({ questions, users }) {
+    const questionList = Object.values(questions);
+    const userWithScore = Object.values(users).map((user) => ({
+      ...user,
+      ...userScore(user.id, questionList),
+    })).sort((a, b) => b.score - a.score);
+
+    // Remove duplicates
+    const scores = [...new Set(userWithScore.map((user) => user.score))];
+    const userWithRank = userWithScore.map((user) => ({
+      ...user,
+      rank: scores.indexOf(user.score) + 1,
+    }));
+
+    return {
+      users: userWithRank,
+    };
+  }
+#+end_src
+**** Tree of =Leaderboard=
+The following components components will be children of =Leaderboard=
+ - =LoginRequired= for authentication
+   - =Body= for layout
+     - A list of =UserCard= for each user.
+
+#+begin_src plantuml :file images/leaderboard_component_structure.png
+  skinparam {
+      titleBorderRoundCorner 15
+      titleBorderThickness 2
+      titleBorderColor black
+      handwritten true
+      shadowing true
+      defaultMonospacedFontName Courier
+      ArrowColor Olive
+  }
+
+  title =Tree structure of component: ""Leaderboard""
+  left to right direction
+
+  rectangle Leaderboard [
+  ""**Leaderboard**""
+  ]
+  rectangle LoginRequired [
+  ""**LoginRequired**""
+  ]
+  rectangle Body [
+  ""**Body**""
+  ]
+  rectangle UserCards [
+  ""**UserCard[]**""
+  ]
+  rectangle UserCard [
+  ""**UserCard**""
+  ==
+  === Passed Props:
+  ..
+  ""string"" : ""name""
+  ..
+  ""string"" : ""avatarURL""
+  ..
+  ""string[]"" : ""answeredQuestions""
+  ..
+  ""string[]"" : ""createdQuestions""
+  ..
+  ""number"" : ""rank""
+  ..
+  ""string"" : ""link""
+  ..
+  ""string"" : ""key""
+  ]
+
+  Leaderboard --> LoginRequired
+  LoginRequired --> Body
+  Body --> UserCards
+  UserCards --> UserCard
+#+end_src
+
+#+caption: Structure of =Leaderboard= component
+#+RESULTS:
+[[file:images/leaderboard_component_structure.png]]
+
