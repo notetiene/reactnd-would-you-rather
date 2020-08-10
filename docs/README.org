@@ -925,3 +925,152 @@ The following components components will be children of =NewQuestion=
 #+RESULTS:
 [[file:images/newquestion_component_structure.png]]
 
+*** =SignIn= Component
+The =SignIn= component will contain a dropdown button to sign-in.  The
+list of users will be displayed in the dropdown allowing to signin
+without typing the user name.  However, this functionality will be
+delegated to a child component, namely =UserSelector=.
+
+This component will be a connected component to the Redux store.  The
+following Redux state properties will be used for mapping:
+ - =authedUser=
+
+The =authedUser= property will be needed to change the location when
+its value is not null.  The user will be redirected to the =HomePage=.
+
+**** Overview
+#+caption: Mockup of =SignIn= component
+#+RESULTS:
+[[file:images/signin_overview.png]]
+
+This is the view of the =SignIn= component.
+
+1. is a =Body= component
+2. is a =Label= component containing a =Header= that also contains a
+   =Header.Subheader=
+3. is an =Image= component
+4. is a =Header= component
+5. is a =UserSelector= component.  Note that the parent (not shown) is
+   a =Form=
+6. is a =Button= component that is also a child of the =Form=
+
+**** Tree of =SignIn=
+The following components components will be children of =SignIn=
+ - =Body= for layout
+   - =Label= for displaying an attached header (full-width)
+     - =Header= as =h3= for displaying a welcome message
+       - =Header.Subheader= for asking the user to sign-in
+   - =Image= for displaying the app logo
+   - =Header= as =h2= to show the text: ~Sign in~
+   - =Form= to handle the submission
+     - =Form.Field=
+       - =UserSelector= that is a dropdown menu for selecting a user
+     - =Form.Field=
+       - =Button= that is a =type= of =submit=.  The button will be
+         disabled by default, but when a valid user is selected, will
+         be enabled.
+
+#+begin_src plantuml :file images/signin_component_structure.png
+  skinparam {
+      titleBorderRoundCorner 15
+      titleBorderThickness 2
+      titleBorderColor black
+      handwritten true
+      shadowing true
+      defaultMonospacedFontName Courier
+      ArrowColor Olive
+  }
+
+  title =Tree structure of component: ""SignIn""
+  left to right direction
+
+  rectangle SignIn [
+  ""**SignIn**""
+  ]
+  rectangle Body [
+  ""**Body**""
+  ]
+  rectangle Label [
+  ""**Label**""
+  ]
+  rectangle Header [
+  ""**Header**""
+  ]
+  rectangle Header.Subheader [
+  ""**Header.Subheader**""
+  ]
+  rectangle Image [
+  ""**Image**""
+  ]
+  rectangle Header2 [
+  ""**Header**""
+  ]
+  rectangle Form [
+  ""**Form**""
+  ]
+  rectangle Form.Field [
+  ""**Form.Field**""
+  ]
+  rectangle UserSelector [
+  ""**UserSelector**""
+  ]
+  rectangle Form.Field2 [
+  ""**Form.Field**""
+  ]
+  rectangle Button [
+  ""**Button[type="submit"]**""
+  ]
+
+  SignIn --> Body
+  Body --> Label
+  Label --> Header
+  Header --> Header.Subheader
+  Body --> Image
+  Body --> Header2
+  Body --> Form
+  Form --> Form.Field
+  Form.Field --> UserSelector
+  Form --> Form.Field2
+  Form.Field2 --> Button
+#+end_src
+#+caption: Structure of SignIn component
+#+RESULTS:
+[[file:images/signin_component_structure.png]]
+
+**** Data of =SignIn=
+The component will contain the following (component) state properties:
+ - =submitDisabled= that will disabled the button for submission.  The
+   =SelectUser= component used will not allow to submit when clicking
+   [Enter] in the field.
+ - =loading= that will be passed to the =Form=.  The library used will
+   display a loading placeholder instead of the actual form.
+
+The properties mapped will be the following:
+ - =authedUser=
+   - The same value as in store
+
+#+begin_src plantuml :file images/signin_component_data.png
+  skinparam {
+      titleBorderRoundCorner 15
+      titleBorderThickness 2
+      titleBorderColor black
+      handwritten true
+      shadowing true
+      defaultMonospacedFontName Courier
+  }
+
+  title =Data of component: ""Sigin""
+  left to right direction
+
+  class SignIn {
+      == State props ==
+      bool : submitDisabled = true
+      bool : loading = false
+      == Connected Props ==
+      string : authedUser
+  }
+#+end_src
+#+caption: Data of =SignIn= component
+#+RESULTS:
+[[file:images/signin_component_data.png]]
+
