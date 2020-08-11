@@ -19,7 +19,11 @@ function Question({
   questionNotFound,
 }) {
   if (questionNotFound) {
-    return <PageNotFound />;
+    return (
+      <LoginRequired>
+        <PageNotFound />
+      </LoginRequired>
+    );
   }
 
   return (

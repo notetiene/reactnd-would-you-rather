@@ -29,7 +29,9 @@ function User(props) {
 
   if (users[id] === undefined) {
     return (
-      <PageNotFound />
+      <LoginRequired>
+        <PageNotFound />
+      </LoginRequired>
     );
   }
 
