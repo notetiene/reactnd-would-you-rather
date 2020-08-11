@@ -21,7 +21,7 @@ function PollResults({ title, choice, options }) {
       <h2>{title || 'Results'}</h2>
       {options.map((option) => {
         const choosen = choice === option.value;
-        const percent = (option.votes / totalVotes) * 100;
+        const percent = Math.round((option.votes / totalVotes) * 100);
 
         return (
           <Segment
