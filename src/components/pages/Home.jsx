@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import LoginRequired from '../authentication/LoginRequired';
 import Body from '../layout/Body';
 import QuestionList from '../question/QuestionList';
 import {
@@ -12,14 +13,16 @@ function Home({
   unansweredQuestions,
 }) {
   return (
-    <Body
-      noSegment
-    >
-      <QuestionList
-        unansweredQuestions={unansweredQuestions}
-        answeredQuestions={answeredQuestions}
-      />
-    </Body>
+    <LoginRequired>
+      <Body
+        noSegment
+      >
+        <QuestionList
+          unansweredQuestions={unansweredQuestions}
+          answeredQuestions={answeredQuestions}
+        />
+      </Body>
+    </LoginRequired>
   );
 }
 

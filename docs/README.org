@@ -530,10 +530,11 @@ return the question IDs
 
 **** Tree of =Home=
 The following components components will be children of =Home=
- - =Body= for layout
-   - =QuestionList= to show answered and unanswered questions.  Both
-     properties passed to the component will be a list of question IDs
-     as string
+ - =LoginRequired= for authentication
+   - =Body= for layout
+     - =QuestionList= to show answered and unanswered questions.  Both
+       properties passed to the component will be a list of question
+       IDs as string
 
 #+begin_src plantuml :file images/home_component_structure.png
   skinparam {
@@ -552,6 +553,9 @@ The following components components will be children of =Home=
   rectangle Home [
   ""**Home**""
   ]
+  rectangle LoginRequired [
+  ""**LoginRequired**""
+  ]
   rectangle Body [
   ""**Body**""
   ]
@@ -567,7 +571,8 @@ The following components components will be children of =Home=
   <size:13>List of answered question ids
   ]
 
-  Home --> Body
+  Home --> LoginRequired
+  LoginRequired --> Body
   Body --> QuestionList
 #+end_src
 #+caption: Structure of Home component
