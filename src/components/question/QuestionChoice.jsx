@@ -11,6 +11,7 @@ import {
   optionPropType,
   actionCreatorPropType,
   idPropType,
+  authedUserPropType,
 } from '../common';
 
 function QuestionChoice({
@@ -20,17 +21,18 @@ function QuestionChoice({
   optionB,
   doAnswer,
   id,
+  authedUser,
 }) {
   const handleChoice = (choice) => {
     const answer = {
-      a: 'one',
-      b: 'two',
+      a: 'optionOne',
+      b: 'optionTwo',
     }[choice];
 
     doAnswer({
       question: id,
       answer,
-      user: id,
+      user: authedUser,
     });
   };
 
@@ -56,6 +58,7 @@ QuestionChoice.propTypes = {
   optionB: optionPropType.isRequired,
   doAnswer: actionCreatorPropType.isRequired,
   id: idPropType.isRequired,
+  authedUser: authedUserPropType.isRequired,
 };
 
 function mapStateToProps({ users, questions, authedUser }, { id }) {
