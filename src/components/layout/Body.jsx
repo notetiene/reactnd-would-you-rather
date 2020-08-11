@@ -5,9 +5,14 @@ import {
   Segment,
 } from 'semantic-ui-react';
 
-import { childrenPropType } from '../common';
+import { childrenPropType, loadingPropType } from '../common';
 
-function Body({ compact, children, noSegment }) {
+function Body({
+  compact,
+  children,
+  noSegment,
+  loading,
+}) {
   const maxWidth = compact ? 650 : 800;
 
   return (
@@ -16,13 +21,13 @@ function Body({ compact, children, noSegment }) {
       verticalAlign="middle"
     >
       <Grid.Column style={{ maxWidth }}>
-        {(noSegment && children) || (
-          <Segment
-            padded
-          >
-            {children}
-          </Segment>
-        )}
+        <Segment
+          basic={noSegment}
+          padded={!noSegment}
+          loading={loading}
+        >
+          {children}
+        </Segment>
       </Grid.Column>
     </Grid>
   );
@@ -32,6 +37,7 @@ Body.propTypes = {
   compact: PropTypes.bool,
   noSegment: PropTypes.bool,
   children: childrenPropType.isRequired,
+  loading: loadingPropType.isRequired,
 };
 
 Body.defaultProps = {

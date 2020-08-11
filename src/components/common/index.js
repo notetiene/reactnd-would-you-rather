@@ -116,3 +116,4 @@ export const pushPropType = PropTypes.func;
 export const onSubmitPropType = PropTypes.func;
 
 export const choicePropType = PropTypes.oneOf(['a', 'b']);
+export const loadingPropType = PropTypes.bool;
