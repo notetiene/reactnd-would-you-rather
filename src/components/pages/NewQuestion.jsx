@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { push } from 'connected-react-router';
 
 import LoginRequired from '../authentication/LoginRequired';
 import Body from '../layout/Body';
 import OptionOrOptionForm from '../form/OptionOrOptionForm';
+import { addQuestion } from '../../actions/questions';
+import { actionCreatorPropType, pushPropType } from '../common';
 
 class NewQuestion extends Component {
   constructor(...args) {
@@ -40,6 +43,24 @@ class NewQuestion extends Component {
     return option1.trim() !== '' && option2.trim() !== '';
   }
 
+  handleSubmission = () => {
+    const {
+      doAddQuestion,
+      doPush,
+    } = this.props;
+
+    const {
+      option1,
+      option2,
+    } = this.state;
+
+    doAddQuestion({
+      optionOne: option1,
+      optionTwo: option2,
+    });
+    doPush('/');
+  }
+
   render() {
     const {
       option1,
@@ -71,7 +92,7 @@ class NewQuestion extends Component {
             subtitle="Would you rather …"
             options={options}
             isValidForm={() => !this.isValidQuestion()}
-            onSubmit={() => {}}
+            onSubmit={this.handleSubmission}
           />
         </Body>
       </LoginRequired>
@@ -79,4 +100,12 @@ class NewQuestion extends Component {
   }
 }
 
-export default connect()(NewQuestion);
+NewQuestion.propTypes = {
+  doAddQuestion: actionCreatorPropType.isRequired,
+  doPush: pushPropType.isRequired,
+};
+
+export default connect(null, {
+  doAddQuestion: addQuestion,
+  doPush: push,
+})(NewQuestion);
