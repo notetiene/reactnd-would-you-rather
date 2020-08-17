@@ -18,13 +18,13 @@ export default function questionsReducer(state = {}, action) {
     case ANSWER_QUESTION:
       return {
         ...state,
-        [info.question]: {
-          ...state[info.question],
+        [info.qid]: {
+          ...state[info.qid],
           [info.answer]: {
-            ...state[info.question][info.answer],
+            ...state[info.qid][info.answer],
             votes: [
-              ...state[info.question][info.answer].votes,
-              info.user,
+              ...state[info.qid][info.answer].votes,
+              info.authedUser,
             ],
           },
         },

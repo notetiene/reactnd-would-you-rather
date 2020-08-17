@@ -30,9 +30,9 @@ function QuestionChoice({
     }[choice];
 
     doAnswer({
-      question: id,
+      qid: id,
       answer,
-      user: authedUser,
+      authedUser,
     });
   };
 
