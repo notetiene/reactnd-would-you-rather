@@ -1,4 +1,7 @@
-import { saveQuestionAnswer } from '../util/api';
+import {
+  saveQuestionAnswer,
+  saveQuestion,
+} from '../util/api';
 
 export const RECEIVE_QUESTIONS = 'RECEIVE_QUESTIONS';
 export const ANSWER_QUESTION = 'ANSWER_QUESTION';
@@ -22,8 +25,11 @@ export function answerQuestion(info) {
 }
 
 export function addQuestion(info) {
-  return {
-    type: ADD_NEW_QUESTION,
-    info,
+  return (dispatch) => {
+    saveQuestion(info)
+      .then((formattedQuestion) => dispatch({
+        type: ADD_NEW_QUESTION,
+        info: formattedQuestion,
+      }));
   };
 }
