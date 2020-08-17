@@ -1,0 +1,9 @@
+{
+  "libs": [
+    "browser"
+  ],
+  "plugins": {
+    "node": true,
+    "es_modules": true
+  }
+}
