@@ -6,7 +6,11 @@ import LoginRequired from '../authentication/LoginRequired';
 import Body from '../layout/Body';
 import OptionOrOptionForm from '../form/OptionOrOptionForm';
 import { addQuestion } from '../../actions/questions';
-import { actionCreatorPropType, pushPropType } from '../common';
+import {
+  actionCreatorPropType,
+  pushPropType,
+  authedUserPropType,
+} from '../common';
 
 class NewQuestion extends Component {
   constructor(...args) {
@@ -47,6 +51,7 @@ class NewQuestion extends Component {
     const {
       doAddQuestion,
       doPush,
+      author,
     } = this.props;
 
     const {
@@ -57,6 +62,7 @@ class NewQuestion extends Component {
     doAddQuestion({
       optionOneText: option1,
       optionTwoText: option2,
+      author,
     });
     doPush('/');
   }
@@ -103,9 +109,16 @@ class NewQuestion extends Component {
 NewQuestion.propTypes = {
   doAddQuestion: actionCreatorPropType.isRequired,
   doPush: pushPropType.isRequired,
+  author: authedUserPropType.isRequired,
 };
 
-export default connect(null, {
+function mapStateToProps({ authedUser }) {
+  return {
+    author: authedUser,
+  };
+}
+
+export default connect(mapStateToProps, {
   doAddQuestion: addQuestion,
   doPush: push,
 })(NewQuestion);
