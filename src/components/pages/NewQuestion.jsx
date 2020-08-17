@@ -55,8 +55,8 @@ class NewQuestion extends Component {
     } = this.state;
 
     doAddQuestion({
-      optionOne: option1,
-      optionTwo: option2,
+      optionOneText: option1,
+      optionTwoText: option2,
     });
     doPush('/');
   }
