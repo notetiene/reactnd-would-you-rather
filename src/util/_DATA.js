@@ -1,4 +1,4 @@
-let users = {
+localStorage.users = localStorage.users || JSON.stringify({
   sarahedo: {
     id: 'sarahedo',
     name: 'Sarah Edo',
@@ -32,9 +32,9 @@ let users = {
     },
     questions: ['6ni6ok3ym7mf1p33lnez', 'xj352vofupe1dqz9emx13r'],
   },
-};
+});
 
-let questions = {
+localStorage.questions = localStorage.questions || JSON.stringify({
   '8xf0y6ziyjabvozdd253nd': {
     id: '8xf0y6ziyjabvozdd253nd',
     author: 'sarahedo',
@@ -113,13 +113,15 @@ let questions = {
       text: 'write Swift',
     },
   },
-};
+});
 
 function generateUID() {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 }
 
 export function _getUsers() {
+  const users = JSON.parse(localStorage.users);
+
   return new Promise((res) => {
     setTimeout(() => res({ ...users }), 1000);
   });
@@ -127,6 +129,7 @@ export function _getUsers() {
 
 export function _getQuestions() {
   return new Promise((res) => {
+    const questions = JSON.parse(localStorage.questions);
     setTimeout(() => res({ ...questions }), 1000);
   });
 }
@@ -149,22 +152,24 @@ function formatQuestion({ optionOneText, optionTwoText, author }) {
 
 export function _saveQuestion(question) {
   return new Promise((res) => {
+    const questions = JSON.parse(localStorage.questions);
+    const users = JSON.parse(localStorage.users);
     const authedUser = question.author;
     const formattedQuestion = formatQuestion(question);
 
     setTimeout(() => {
-      questions = {
+      localStorage.questions = JSON.stringify({
         ...questions,
         [formattedQuestion.id]: formattedQuestion,
-      };
+      });
 
-      users = {
+      localStorage.users = JSON.stringify({
         ...users,
         [authedUser]: {
           ...users[authedUser],
           questions: users[authedUser].questions.concat([formattedQuestion.id]),
         },
-      };
+      });
 
       res(formattedQuestion);
     }, 1000);
@@ -174,7 +179,10 @@ export function _saveQuestion(question) {
 export function _saveQuestionAnswer({ authedUser, qid, answer }) {
   return new Promise((res) => {
     setTimeout(() => {
-      users = {
+      const questions = JSON.parse(localStorage.questions);
+      const users = JSON.parse(localStorage.users);
+
+      localStorage.users = JSON.stringify({
         ...users,
         [authedUser]: {
           ...users[authedUser],
@@ -183,9 +191,9 @@ export function _saveQuestionAnswer({ authedUser, qid, answer }) {
             [qid]: answer,
           },
         },
-      };
+      });
 
-      questions = {
+      localStorage.questions = JSON.stringify({
         ...questions,
         [qid]: {
           ...questions[qid],
@@ -194,7 +202,7 @@ export function _saveQuestionAnswer({ authedUser, qid, answer }) {
             votes: questions[qid][answer].votes.concat([authedUser]),
           },
         },
-      };
+      });
 
       res();
     }, 500);
