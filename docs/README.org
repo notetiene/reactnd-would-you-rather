@@ -86,22 +86,22 @@ The answered question must contain:
 
 **** DONE Show error if poll doesn’t exist
      Show an error page (404) if the poll doesn’t exist.
-*** TODO New question page
-**** TODO Located at ~/add~
-**** TODO Show content
+*** DONE New question page
+**** DONE Located at ~/add~
+**** DONE Show content
 The page must contain:
- * [ ] The text =Would You Rather=
- * [ ] A form of two options
+ * [X] The text =Would You Rather=
+ * [X] A form of two options
 
 The page should:
- * [ ] Have indication that the input are required
- * [ ] Have a button submit button that is disabled when the two input are
+ * [X] Have indication that the input are required
+ * [X] Have a button submit button that is disabled when the two input are
    not correct, but becomes enabled when the form is correct
- * [ ] Submit the answer when pressing enter
- * [ ] Both input should not be empty or with white space only
+ * [X] Submit the answer when pressing enter
+ * [X] Both input should not be empty or with white space only
 
-**** TODO Handle new question
- * [ ] The new question should appear in the correct category on the
+**** DONE Handle new question
+ * [X] The new question should appear in the correct category on the
    home page
 *** TODO Leaderboard
 **** TODO Located at ~/leaderboard~
