@@ -31,6 +31,9 @@ function QuestionList({
               id={id}
             />
           ))}
+          {unansweredQuestions.length === 0 && (
+            <p>Good job!  All questions are answered</p>
+          )}
         </Tab.Pane>
       ),
     }, {
@@ -54,6 +57,9 @@ function QuestionList({
               id={id}
             />
           ))}
+          {answeredQuestions.length === 0 && (
+            <p>That’s embarassing.  You didn’t answer any question!</p>
+          )}
         </Tab.Pane>
       ),
     },
