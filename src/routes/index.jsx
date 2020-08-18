@@ -7,6 +7,7 @@ import Question from '../components/pages/Question';
 import SignIn from '../components/pages/SignIn';
 import User from '../components/pages/User';
 import PageNotFound from '../components/pages/PageNotFound';
+import About from '../components/pages/About';
 
 export const routes = [{
   path: '/',
@@ -36,6 +37,11 @@ export const routes = [{
   path: '/user::id',
   component: User,
   item: 'user',
+}, {
+  path: '/about',
+  component: About,
+  exact: true,
+  item: 'about',
 }, {
   path: '/',
   component: PageNotFound,
