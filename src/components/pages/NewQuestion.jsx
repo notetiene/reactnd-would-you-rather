@@ -109,7 +109,11 @@ class NewQuestion extends Component {
 NewQuestion.propTypes = {
   doAddQuestion: actionCreatorPropType.isRequired,
   doPush: pushPropType.isRequired,
-  author: authedUserPropType.isRequired,
+  author: authedUserPropType,
+};
+
+NewQuestion.defaultProps = {
+  author: null,
 };
 
 function mapStateToProps({ authedUser }) {
