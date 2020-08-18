@@ -115,8 +115,8 @@ The list of users and the following:
 
 It should contain the following:
  * [X] Sum of score
- * [ ] Trophies based on score
-   * [ ] No trophy if max score is zero
+ * [X] Trophies based on score
+   * [X] No trophy if max score is zero
 
 *** TODO Navbar
     Add a navbar to navigate between:

@@ -68,7 +68,7 @@ function mapStateToProps({ questions, users }) {
   const scores = [...new Set(userWithScore.map((user) => user.score))];
   const userWithRank = userWithScore.map((user) => ({
     ...user,
-    rank: scores.indexOf(user.score) + 1,
+    rank: user.score > 0 ? scores.indexOf(user.score) + 1 : 0,
   }));
 
   return {
