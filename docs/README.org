@@ -53,38 +53,38 @@ Would you rather [option A] or [option B]?
 **** DONE A poll can be clicked
      When clicking on the poll, show the poll page.
 
-*** TODO Question page
-**** TODO Located at ~/questions/:question_id~
+*** DONE Question page
+**** DONE Located at ~/questions/:question_id~
      Where =:question_id= is the id of the poll/question.
-**** TODO Show content
-***** Unanswered question
+**** DONE Show content
+***** DONE Unanswered question
 #+caption: Question page (unanswered)
 [[file:images/question_page_unanswered.png]]
 
 The unanswered question must contain:
- * [ ] The text =Would you rather=
- * [ ] Avatar of the user who posted the question
- * [ ] Two options
+ * [X] The text =Would you rather=
+ * [X] Avatar of the user who posted the question
+ * [X] Two options
 
-****** When voting
- * [ ] The answer must be recorded
- * [ ] All the information about the question should be displayed
+****** DONE When voting
+ * [X] The answer must be recorded
+ * [X] All the information about the question should be displayed
    (answered question)
- * [ ] Users can only vote once and cannot change their answer
- * [ ] When the user comes back to the home page, the question should
+ * [X] Users can only vote once and cannot change their answer
+ * [X] When the user comes back to the home page, the question should
    be in the answered section
 
-***** Answered question
+***** DONE Answered question
 #+caption: Question page (unanswered)
 [[file:images/question_page_answered.png]]
 
 The answered question must contain:
- * [ ] Text of the option
- * [ ] Number of people who voted for that option
- * [ ] Percentage of people who voted for that option
- * [ ] The option the logged-in user choose
+ * [X] Text of the option
+ * [X] Number of people who voted for that option
+ * [X] Percentage of people who voted for that option
+ * [X] The option the logged-in user choose
 
-**** TODO Show error if poll doesn’t exist
+**** DONE Show error if poll doesn’t exist
      Show an error page (404) if the poll doesn’t exist.
 *** TODO New question page
 **** TODO Located at ~/add~
