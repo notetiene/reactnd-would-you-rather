@@ -2,6 +2,10 @@ import {
   saveQuestionAnswer,
   saveQuestion,
 } from '../util/api';
+import {
+  loadingStart,
+  loadingEnd,
+} from './loading';
 
 export const RECEIVE_QUESTIONS = 'RECEIVE_QUESTIONS';
 export const ANSWER_QUESTION = 'ANSWER_QUESTION';
@@ -16,20 +20,28 @@ export function receiveQuestions(questions) {
 
 export function answerQuestion(info) {
   return (dispatch) => {
+    dispatch(loadingStart());
     saveQuestionAnswer(info)
-      .then(() => dispatch({
-        type: ANSWER_QUESTION,
-        info,
-      }));
+      .then(() => {
+        dispatch({
+          type: ANSWER_QUESTION,
+          info,
+        });
+        dispatch(loadingEnd());
+      });
   };
 }
 
 export function addQuestion(info) {
   return (dispatch) => {
+    dispatch(loadingStart());
     saveQuestion(info)
-      .then((formattedQuestion) => dispatch({
-        type: ADD_NEW_QUESTION,
-        info: formattedQuestion,
-      }));
+      .then((formattedQuestion) => {
+        dispatch({
+          type: ADD_NEW_QUESTION,
+          info: formattedQuestion,
+        });
+        dispatch(loadingEnd());
+      });
   };
 }
