@@ -30,10 +30,14 @@ function LoginRequired({
 }
 
 LoginRequired.propTypes = {
-  authedUser: authedUserPropType.isRequired,
+  authedUser: authedUserPropType,
   users: usersPropType.isRequired,
   dispatch: dispatchPropType.isRequired,
   children: childrenPropType.isRequired,
+};
+
+LoginRequired.defaultProps = {
+  authedUser: null,
 };
 
 function mapStateToProps({ authedUser, users }) {
@@ -42,4 +46,5 @@ function mapStateToProps({ authedUser, users }) {
     users,
   };
 }
+
 export default connect(mapStateToProps)(LoginRequired);
