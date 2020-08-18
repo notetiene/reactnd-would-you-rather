@@ -29,28 +29,28 @@ Would you rather [option A] or [option B]?
     fake database and functions to interact with it.
 
 ** App functionality
-*** TODO Impersonating
+*** DONE Impersonating
     There should be a way to impersonate a existing user.
-**** TODO Allow log in and log out
-**** TODO On log in, show home page
-**** TODO Current user should be shown
-*** TODO Permissions
-**** TODO User must be logged-in to show pages
+**** DONE Allow log in and log out
+**** DONE On log in, show home page
+**** DONE Current user should be shown
+*** DONE Permissions
+**** DONE User must be logged-in to show pages
 
      If someone tries to navigate anywhere by entering the address in
      the address bar, the user *is asked to sign in* and then the
      requested page is shown.
 
-*** TODO Home page
+*** DONE Home page
 #+caption: Question page
 [[file:images/home_page.png]]
-**** TODO Located at the root ~/~
-**** TODO Show answered and unanswered questions
+**** DONE Located at the root ~/~
+**** DONE Show answered and unanswered questions
      There should two tabs.
-***** TODO Unanswered questions shown by default
-**** TODO Show in order
+***** DONE Unanswered questions shown by default
+**** DONE Show in order
      Show most recent (top) to least recent (bottom).
-**** TODO A poll can be clicked
+**** DONE A poll can be clicked
      When clicking on the poll, show the poll page.
 
 *** TODO Question page
