@@ -1,16 +1,14 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
 import { push } from 'connected-react-router';
-
 import {
   Image,
   Menu,
 } from 'semantic-ui-react';
 
-import { signOut } from '../../actions/authedUser';
 import LoginButton from './LoginButton';
+import { signOut } from '../../actions/authedUser';
 import {
   authedUserPropType,
   usersPropType,

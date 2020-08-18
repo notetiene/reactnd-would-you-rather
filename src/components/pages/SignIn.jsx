@@ -13,7 +13,10 @@ import Body from '../layout/Body';
 import logo from '../../logo.svg';
 import UserSelector from '../user/UserSelector';
 import { setAuthedUser } from '../../actions/authedUser';
-import { authedUserPropType, dispatchPropType } from '../common';
+import {
+  authedUserPropType,
+  dispatchPropType,
+} from '../common';
 
 class SignIn extends Component {
   constructor(...args) {
