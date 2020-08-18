@@ -103,7 +103,7 @@ The page should:
 **** DONE Handle new question
  * [X] The new question should appear in the correct category on the
    home page
-*** TODO Leaderboard
+*** DONE Leaderboard
 **** DONE Located at ~/leaderboard~
 **** DONE Show content
 The list of users and the following:
@@ -118,13 +118,13 @@ It should contain the following:
  * [X] Trophies based on score
    * [X] No trophy if max score is zero
 
-*** TODO Navbar
+*** DONE Navbar
     Add a navbar to navigate between:
 
- * [ ] Home page
- * [ ] New question page
- * [ ] Leader board
- * [ ] Log in or Log out
+ * [X] Home page
+ * [X] New question page
+ * [X] Leader board
+ * [X] Log in or Log out
 ** App architecture
 *** Most state should be managed by Redux
 Read: [[https://github.com/reactjs/redux/issues/1287][choosing between Redux’s store and React’s state]]
