@@ -104,17 +104,17 @@ The page should:
  * [X] The new question should appear in the correct category on the
    home page
 *** TODO Leaderboard
-**** TODO Located at ~/leaderboard~
-**** TODO Show content
+**** DONE Located at ~/leaderboard~
+**** DONE Show content
 The list of users and the following:
- * [ ] User’s name
- * [ ] User’s avatar
- * [ ] Number of question the user asked
- * [ ] Number of question the user answered
- * [ ] Sorted by their score (questions + answers)
+ * [X] User’s name
+ * [X] User’s avatar
+ * [X] Number of question the user asked
+ * [X] Number of question the user answered
+ * [X] Sorted by their score (questions + answers)
 
 It should contain the following:
- * [ ] Sum of score
+ * [X] Sum of score
  * [ ] Trophies based on score
    * [ ] No trophy if max score is zero
 
