@@ -333,6 +333,7 @@ The store contains 3 main properties.
           rectangle SignIn
           rectangle User
           rectangle PageNotFound
+          rectangle About
 
           cloud "/" as home
           cloud "/leaderboard" as leaderboard
@@ -341,6 +342,7 @@ The store contains 3 main properties.
           cloud "/question::id" as question
           cloud "/user::id" as user
           cloud "/" as pagenotfound
+          cloud "/about" as about
 
           home --> Home : exact match
           leaderboard --> Leaderboard : exact match
@@ -349,6 +351,7 @@ The store contains 3 main properties.
           question ..> Question : matches /user:‘id’
           user ..> User : matches /question:‘id’
           pagenotfound ..> PageNotFound : matches anything else
+          about --> About : exact match
       }
   }
 #+end_src
@@ -379,9 +382,10 @@ The list of routed components is the following:
      =PageNotFound=
  - =SignIn=
  - =PageNotFound=
+ - =About=
 
 Since many pages (or component) require the user to be logged-in, we
-must use a compone that will provide that behaviour.
+must use a component that will provide that behaviour.
 
 #+begin_src plantuml :file images/routes_to_components_behaviour.png
   skinparam {
@@ -419,6 +423,9 @@ must use a compone that will provide that behaviour.
       ]
       rectangle PageNotFound [
       ""**PageNotFound**""
+      ]
+      rectangle About [
+      ""**About**""
       ]
 
       Question -|> PageNotFound : when question doesn’t exist
@@ -1311,6 +1318,9 @@ The following components components will be children of =PageNotFound=
 #+caption: Structure of PageNotFound component
 #+RESULTS:
 [[file:images/pagenotfound_component_structure.png]]
+
+*** =About= Component
+The =About= component will display information about the application.
 
 ** Store setup
 In order to setup the store, a new file will be used to initialize the
