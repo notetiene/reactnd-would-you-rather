@@ -28,7 +28,7 @@ function About() {
           <a
             href="https://www.udacity.com/course/react-nanodegree--nd019"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
           >
             React Nanodegree Program
           </a>
