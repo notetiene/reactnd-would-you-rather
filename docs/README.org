@@ -153,12 +153,14 @@ title =Redux Store Tree
 rectangle authedUser
 rectangle users
 rectangle questions
+rectangle redirect
 
 rectangle "Store\r<img:https://raw.githubusercontent.com/Roemer/plantuml-office/master/office2014/Databases/database_mini_2_blue.png>" as redux
 
 redux -- authedUser
 redux -- users
 redux -- questions
+redux -- redirect
 #+end_src
 
 #+caption: The Store
@@ -170,6 +172,7 @@ The store contains 3 main properties.
  * =authedUser= that is a =String= containing a *valid* user ID.
  * =users= that is a complex object
  * =questions= that is a complex object
+ * =redirect= that is a simple object
 
 **** =authedUser=
 **** =users=
@@ -273,6 +276,39 @@ The store contains 3 main properties.
 #+caption: Questions structure
 #+RESULTS:
 [[file:images/questions_structure.png]]
+
+#+caption: Questions structure
+#+RESULTS:
+[[file:images/questions_structure.png]]
+
+**** =redirect=
+#+begin_src plantuml :file images/redirect_structure.png
+  skinparam {
+      titleBorderRoundCorner 15
+      titleBorderThickness 2
+      titleBorderColor black
+      handwritten true
+      shadowing true
+      ArrowColor Olive
+  }
+
+  title =Structure of <u>redirect</u> object
+
+  left to right direction
+
+  package redirect [{
+      <i>lastLocation</i>: "/leaderboard",
+  }]
+#+end_src
+
+#+caption: Questions structure
+#+RESULTS:
+[[file:images/redirect_structure.png]]
+
+The redirect property is a simple object containing only one inner
+property:
+ * =lastLocation= that is used to record the location before a
+   redirection
 
 *** App Components structure
 #+begin_src plantuml :file images/app_components_structure.png
@@ -1350,6 +1386,7 @@ export default (history) => combineReducers({
   users,
   questions,
   router: connectRouter(history),
+  redirect,
 });
 #+end_src
 
@@ -1496,6 +1533,53 @@ export function addQuestion(indo) {
 }
 #+end_src
 
+*** redirect
+=redirect= will contain the previous location before redirection.
+
+The =replace= function from =connected-react-router= will be used
+instead of =push= so that the redirection is not pushed to the
+history.
+
+#+begin_src js
+import { replace } from 'connected-react-router';
+
+export const REDIRECT_SIGNIN = 'REDIRECT_SIGNIN';
+export const REDIRECT_UNDO = 'REDIRECT_UNDO';
+const SIGNIN_PATHNAME = '/signin';
+const ROOT_PATHNAME = '/';
+#+end_src
+
+A thunk action creator will redirect to SignIn after having recorded
+the current location.
+
+#+begin_src js
+export function redirectSignin(location) {
+  return (dispatch) => {
+    dispatch({
+      type: REDIRECT_SIGNIN,
+      payload: {
+        location,
+      },
+    });
+    dispatch(replace(SIGNIN_PATHNAME));
+  };
+}
+#+end_src
+
+A thunk action creator will undo the redirection.  It simply means it
+will /redirect/ to the recorded location and notify the reducer to
+remove it.
+
+#+begin_src js
+export function redirectUndo({ lastLocation }) {
+  return (dispatch) => {
+    dispatch({
+      type: REDIRECT_UNDO,
+    });
+    dispatch(replace(lastLocation || ROOT_PATHNAME));
+  };
+}
+#+end_src
 
 *** shared
 In order to handle the initial data, a shared file will be created
@@ -1517,4 +1601,34 @@ export default function handleInitialData() {
       dispatch(receiveQuestions(questions));
     });
 }
+#+end_src
+** Reducers
+*** redirect
+#+begin_src js
+import { REDIRECT_SIGNIN, REDIRECT_UNDO } from '../actions/redirect';
+
+export default (state = {}, action) => {
+  switch (action.type) {
+#+end_src
+
+When there’s a redirection, record the current location.
+#+begin_src js
+    case REDIRECT_SIGNIN:
+      return {
+        ...state,
+        lastLocation: action.payload.location.pathname,
+      };
+#+end_src
+
+Redirection can be undone.
+#+begin_src js
+    case REDIRECT_UNDO:
+      return {
+        ...state,
+        lastLocation: null,
+      };
+    default:
+      return state;
+  }
+};
 #+end_src
