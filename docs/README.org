@@ -171,9 +171,10 @@ redux -- redirect
 
 The store contains 3 main properties.
 
- * =authedUser= that is a =String= containing a *valid* user ID.
+ * =authedUser= that is a =String= containing a *valid* user ID
  * =users= that is a complex object
  * =questions= that is a complex object
+ * =loading= that is a =Boolean=
  * =router= that is a complex object
  * =redirect= that is a simple object
 
@@ -283,6 +284,29 @@ The store contains 3 main properties.
 #+caption: Questions structure
 #+RESULTS:
 [[file:images/questions_structure.png]]
+
+**** =loading=
+#+begin_src plantuml :file images/loading_structure.png
+  skinparam {
+      titleBorderRoundCorner 15
+      titleBorderThickness 2
+      titleBorderColor black
+      handwritten true
+      shadowing true
+      ArrowColor Olive
+  }
+
+  title =Structure of <u>loading</u> object
+
+  left to right direction
+
+  package loading [
+      boolean
+  ]
+#+end_src
+
+#+RESULTS:
+[[file:images/loading_structure.png]]
 
 **** =router=
 This property is managed by =connected-react-router=.
@@ -1386,11 +1410,14 @@ import { connectRouter } from 'connected-react-router';
 import authedUser from './authedUser';
 import users from './users';
 import questions from './questions';
+import loading from './loading';
+import redirect from './redirect';
 
 export default (history) => combineReducers({
   authedUser,
   users,
   questions,
+  loading,
   router: connectRouter(history),
   redirect,
 });
@@ -1535,6 +1562,27 @@ export function addQuestion(indo) {
   return {
     type: ADD_NEW_QUESTION,
     info,
+  };
+}
+#+end_src
+
+*** loading
+=loading= is a boolean that record if the application is doing API
+calls or not.
+
+#+begin_src js
+export const LOADING_START = 'LOADING_START';
+export const LOADING_END = 'LOADING_END';
+
+export function loadingStart() {
+  return {
+    type: LOADING_START,
+  };
+}
+
+export function loadingEnd() {
+  return {
+    type: LOADING_END,
   };
 }
 #+end_src
@@ -1735,6 +1783,25 @@ Adding a new question creates a whole new question object.
           },
         },
       };
+    default:
+      return state;
+  }
+}
+#+end_src
+
+*** loading
+#+begin_src js
+import {
+  LOADING_START,
+  LOADING_END,
+} from '../actions/loading';
+
+export default function loading(state = null, action) {
+  switch (action.type) {
+    case LOADING_START:
+      return true;
+    case LOADING_END:
+      return false;
     default:
       return state;
   }
