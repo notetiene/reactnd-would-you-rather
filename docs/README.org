@@ -224,7 +224,6 @@ The store contains 3 main properties.
 [[file:images/users_structure.png]]
 
 **** =questions=
-
 #+begin_src plantuml :file images/questions_structure.png
   skinparam {
       titleBorderRoundCorner 15
@@ -1398,7 +1397,7 @@ A new file containing all the reducers will be created at
 =./reducers/index.js= in order to import all the reducer.  A single
 root reducer will be exported.
 
-#+begin_src js
+#+begin_src js :tangle ../src/reducers/index.js :comments link
 import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
 import authedUser from './authedUser';
@@ -1426,7 +1425,7 @@ A new file containing all the middlewares (or enhancers) will be
 created at =./middleware/index.js= in order to support the router
 middleware.
 
-#+begin_src js
+#+begin_src js :tangle ../src/middleware/index.js :comments link
 import { applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { routerMiddleware } from 'connected-react-router';
@@ -1445,7 +1444,7 @@ export default (history) => composeEnhancers(
 #+end_src
 
 *** =configureStore.js=
-#+begin_src js
+#+begin_src js :tangle ../src/configureStore.js :comments link
 import { createBrowserHistory } from 'history';
 import { createStore } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
@@ -1492,7 +1491,7 @@ Last, =Provider= from =react-redux= will be imported.
    the new user.
  * =signOut= to sign-out the user.
 
-#+begin_src js
+#+begin_src js :tangle ../src/actions/authedUser.js :comments link
 export const SET_AUTHED_USER = 'SET_AUTHED_USER';
 export const SIGNOUT_AUTHED_USER = 'SIGNOUT_AUTHED_USER';
 
@@ -1515,7 +1514,7 @@ export function signOut() {
 
  * =receiveUsers= to receive the list of users.
 
-#+begin_src js
+#+begin_src js :tangle ../src/actions/users.js :comments link
 export const RECEIVE_USERS = 'RECEIVE_USERS';
 
 export function receiveUsers(users) {
@@ -1533,7 +1532,16 @@ export function receiveUsers(users) {
  * =answerQuestion= to answer a given question.
  * =addQuestion= to add a new question.
 
-#+begin_src js
+#+begin_src js :tangle ../src/actions/questions.js :comments link
+import {
+  saveQuestionAnswer,
+  saveQuestion,
+} from '../util/api';
+import {
+  loadingStart,
+  loadingEnd,
+} from './loading';
+
 export const RECEIVE_QUESTIONS = 'RECEIVE_QUESTIONS';
 export const ANSWER_QUESTION = 'ANSWER_QUESTION';
 export const ADD_NEW_QUESTION = 'ADD_NEW_QUESTION';
@@ -1546,16 +1554,30 @@ export function receiveQuestions(questions) {
 }
 
 export function answerQuestion(info) {
-  return {
-    type: ANSWER_QUESTION,
-    info,
+  return (dispatch) => {
+    dispatch(loadingStart());
+    saveQuestionAnswer(info)
+      .then(() => {
+        dispatch({
+          type: ANSWER_QUESTION,
+          info,
+        });
+        dispatch(loadingEnd());
+      });
   };
 }
 
-export function addQuestion(indo) {
-  return {
-    type: ADD_NEW_QUESTION,
-    info,
+export function addQuestion(info) {
+  return (dispatch) => {
+    dispatch(loadingStart());
+    saveQuestion(info)
+      .then((formattedQuestion) => {
+        dispatch({
+          type: ADD_NEW_QUESTION,
+          info: formattedQuestion,
+        });
+        dispatch(loadingEnd());
+      });
   };
 }
 #+end_src
@@ -1564,7 +1586,7 @@ export function addQuestion(indo) {
 =loading= is a boolean that record if the application is doing API
 calls or not.
 
-#+begin_src js
+#+begin_src js :tangle ../src/actions/loading.js :comments link
 export const LOADING_START = 'LOADING_START';
 export const LOADING_END = 'LOADING_END';
 
@@ -1588,7 +1610,7 @@ The =replace= function from =connected-react-router= will be used
 instead of =push= so that the redirection is not pushed to the
 history.
 
-#+begin_src js
+#+begin_src js :tangle ../src/actions/redirect.js :comments link
 import { replace } from 'connected-react-router';
 
 export const REDIRECT_SIGNIN = 'REDIRECT_SIGNIN';
@@ -1600,7 +1622,7 @@ const ROOT_PATHNAME = '/';
 A thunk action creator will redirect to SignIn after having recorded
 the current location.
 
-#+begin_src js
+#+begin_src js :tangle ../src/actions/redirect.js :comments link
 export function redirectSignin(location) {
   return (dispatch) => {
     dispatch({
@@ -1618,7 +1640,7 @@ A thunk action creator will undo the redirection.  It simply means it
 will /redirect/ to the recorded location and notify the reducer to
 remove it.
 
-#+begin_src js
+#+begin_src js :tangle ../src/actions/redirect.js :comments link
 export function redirectUndo({ lastLocation }) {
   return (dispatch) => {
     dispatch({
@@ -1633,7 +1655,7 @@ export function redirectUndo({ lastLocation }) {
 In order to handle the initial data, a shared file will be created
 containing all the action creators for initialization.
 
-#+begin_src js
+#+begin_src js :tangle ../src/actions/shared.js :comments link
 import { getInitialData } from '../util/api';
 import {
   receiveUsers,
@@ -1642,17 +1664,24 @@ import {
   receiveQuestions,
 } from './questions';
 
+import {
+  loadingStart,
+  loadingEnd,
+} from './loading';
+
 export default function handleInitialData() {
   return (dispatch) => getInitialData()
     .then(({ users, questions }) => {
+      dispatch(loadingStart());
       dispatch(receiveUsers(users));
       dispatch(receiveQuestions(questions));
+      dispatch(loadingEnd());
     });
 }
 #+end_src
 ** Reducers
 *** authedUser
-#+begin_src js
+#+begin_src js :tangle ../src/reducers/authedUser.js :comments link
 import {
   SET_AUTHED_USER,
   SIGNOUT_AUTHED_USER,
@@ -1671,7 +1700,7 @@ export default function authedUser(state = null, action) {
 #+end_src
 
 *** users
-#+begin_src js
+#+begin_src js :tangle ../src/reducers/users.js :comments link
 import { RECEIVE_USERS } from '../actions/users';
 import { ANSWER_QUESTION } from '../actions/questions';
 
@@ -1685,7 +1714,7 @@ export default function usersReducer(state = {}, action) {
 #+end_src
 
 When receiving users, simply spread them.
-#+begin_src js
+#+begin_src js :tangle ../src/reducers/users.js :comments link
     case RECEIVE_USERS:
       return {
         ...state,
@@ -1697,7 +1726,7 @@ When answering a question, add the answer to the user object.  That’s
 redundant, but that’s the way the provided =_DATA.js= file is
 structured.
 
-#+begin_src js
+#+begin_src js :tangle ../src/reducers/users.js :comments link
     case ANSWER_QUESTION:
       return {
         ...state,
@@ -1716,12 +1745,13 @@ structured.
 #+end_src
 
 *** questions
-#+begin_src js
+#+begin_src js :tangle ../src/reducers/questions.js :comments link
 import {
   RECEIVE_QUESTIONS,
   ANSWER_QUESTION,
   ADD_NEW_QUESTION,
 } from '../actions/questions';
+
 export default function questionsReducer(state = {}, action) {
   const {
     questions,
@@ -1732,7 +1762,7 @@ export default function questionsReducer(state = {}, action) {
 #+end_src
 
 When receiving questions, simply spread them.
-#+begin_src js
+#+begin_src js :tangle ../src/reducers/questions.js :comments link
     case RECEIVE_QUESTIONS:
       return {
         ...state,
@@ -1741,7 +1771,7 @@ When receiving questions, simply spread them.
 #+end_src
 
 When answering a question, only add the new user its votes property.
-#+begin_src js
+#+begin_src js :tangle ../src/reducers/questions.js :comments link
     case ANSWER_QUESTION:
       return {
         ...state,
@@ -1759,7 +1789,7 @@ When answering a question, only add the new user its votes property.
 #+end_src
 
 Adding a new question creates a whole new question object.
-#+begin_src js
+#+begin_src js :tangle ../src/reducers/questions.js :comments link
     case ADD_NEW_QUESTION:
       return {
         ...state,
@@ -1784,7 +1814,7 @@ Adding a new question creates a whole new question object.
 #+end_src
 
 *** loading
-#+begin_src js
+#+begin_src js :tangle ../src/reducers/loading.js :comments link
 import {
   LOADING_START,
   LOADING_END,
@@ -1803,7 +1833,7 @@ export default function loading(state = null, action) {
 #+end_src
 
 *** redirect
-#+begin_src js
+#+begin_src js :tangle ../src/reducers/redirect.js :comments link
 import { REDIRECT_SIGNIN, REDIRECT_UNDO } from '../actions/redirect';
 
 export default (state = {}, action) => {
@@ -1811,7 +1841,7 @@ export default (state = {}, action) => {
 #+end_src
 
 When there’s a redirection, record the current location.
-#+begin_src js
+#+begin_src js :tangle ../src/reducers/redirect.js :comments link
     case REDIRECT_SIGNIN:
       return {
         ...state,
@@ -1820,7 +1850,7 @@ When there’s a redirection, record the current location.
 #+end_src
 
 Redirection can be undone.
-#+begin_src js
+#+begin_src js :tangle ../src/reducers/redirect.js :comments link
     case REDIRECT_UNDO:
       return {
         ...state,
