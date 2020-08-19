@@ -27,52 +27,6 @@ function AnsweredQuestion({
         options={options}
         choice={choice}
       />
-      {/*
-       /* <h2>Results</h2>
-       /* <Segment
-       /*   color={(choice === 'a' && 'teal') || undefined}
-       /*   className={(choice === 'a' && 'results-emphasis') || undefined}
-       /* >
-       /*   {choice === 'a' && markIcon}
-       /*   <Header
-       /*     as="h4"
-       /*     color="teal"
-       /*   >
-       /*     {optionA.text}
-       /*   </Header>
-       /*   <Divider
-       /*     hidden
-       /*   />
-       /*   <Progress
-       /*     percent={(optionA.votes / totalVotes) * 100}
-       /*     color="teal"
-       /*     progress
-       /*   >
-       /*     {`${optionA.votes} out of ${totalVotes} votes`}
-       /*   </Progress>
-       /* </Segment>
-       /* <Segment
-       /*   color={(choice === 'b' && 'teal') || undefined}
-       /*   className={(choice === 'b' && 'results-emphasis') || undefined}
-       /* >
-       /*   {choice === 'b' && markIcon}
-       /*   <Header
-       /*     as="h4"
-       /*   >
-       /*     {optionB.text}
-       /*   </Header>
-       /*   <Divider
-       /*     hidden
-       /*   />
-       /*   <Progress
-       /*     percent={(optionB.votes / totalVotes) * 100}
-       /*     color="teal"
-       /*     progress
-       /*   >
-       /*     {`${optionB.votes} out of ${totalVotes} votes`}
-       /*   </Progress>
-       /* </Segment>
-        */}
     </QuestionCard>
   );
 }
