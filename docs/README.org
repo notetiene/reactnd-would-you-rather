@@ -521,7 +521,6 @@ This behaviour will be included in the =QuestionList= component.
 
 **** Overview
 #+caption: Mockup of =Home= component
-#+RESULTS:
 [[file:images/home_overview.png]]
 
 This is the view of the =home= component.
@@ -658,7 +657,6 @@ their rank.  Each user will be clickable to show their page.
 
 **** Overview
 #+caption: Mockup of =Leaderboard= component
-#+RESULTS:
 [[file:images/leaderboard_overview.png]]
 
 This is the view of the =Leaderboard= component.
@@ -832,7 +830,6 @@ The component will be a class component in order to use /React/ state.
 Both input will be controlled by the component.
 **** Overview
 #+caption: Mockup of =NewQuestion= component
-#+RESULTS:
 [[file:images/newquestion_overview.png]]
 
 This is the view of the =NewQuestion= component.
@@ -1018,7 +1015,6 @@ its value is not null.  The user will be redirected to the =HomePage=.
 
 **** Overview
 #+caption: Mockup of =SignIn= component
-#+RESULTS:
 [[file:images/signin_overview.png]]
 
 This is the view of the =SignIn= component.
@@ -1137,7 +1133,7 @@ The properties mapped will be the following:
       defaultMonospacedFontName Courier
   }
 
-  title =Data of component: ""Sigin""
+  title =Data of component: ""SignIn""
   left to right direction
 
   class SignIn {
@@ -1164,7 +1160,6 @@ When the given question doesn’t exist, it will redirect to the
 **** Unanswered question
 ***** Overview
 #+caption: Mockup of an unanswered question
-#+RESULTS:
 [[file:images/question_unanswered_overview.png]]
 
 1. is a =QuestionChoice= component
@@ -1175,7 +1170,6 @@ When the given question doesn’t exist, it will redirect to the
 **** Answered question
 ***** Overview
 #+caption: Mockup of an answered question
-#+RESULTS:
 [[file:images/question_answered_overview.png]]
 
 1. is an =AnsweredQuestion= component
