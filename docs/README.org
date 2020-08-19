@@ -153,6 +153,7 @@ title =Redux Store Tree
 rectangle authedUser
 rectangle users
 rectangle questions
+rectangle router
 rectangle redirect
 
 rectangle "Store\r<img:https://raw.githubusercontent.com/Roemer/plantuml-office/master/office2014/Databases/database_mini_2_blue.png>" as redux
@@ -160,6 +161,7 @@ rectangle "Store\r<img:https://raw.githubusercontent.com/Roemer/plantuml-office/
 redux -- authedUser
 redux -- users
 redux -- questions
+redux -- router
 redux -- redirect
 #+end_src
 
@@ -172,6 +174,7 @@ The store contains 3 main properties.
  * =authedUser= that is a =String= containing a *valid* user ID.
  * =users= that is a complex object
  * =questions= that is a complex object
+ * =router= that is a complex object
  * =redirect= that is a simple object
 
 **** =authedUser=
@@ -280,6 +283,9 @@ The store contains 3 main properties.
 #+caption: Questions structure
 #+RESULTS:
 [[file:images/questions_structure.png]]
+
+**** =router=
+This property is managed by =connected-react-router=.
 
 **** =redirect=
 #+begin_src plantuml :file images/redirect_structure.png
