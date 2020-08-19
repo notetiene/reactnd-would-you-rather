@@ -1,22 +1,25 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import { replace } from 'connected-react-router';
+
+import { redirectSignin } from '../../actions/redirect';
 
 import {
   authedUserPropType,
   usersPropType,
   childrenPropType,
   dispatchPropType,
+  locationPropType,
 } from '../common';
 
 function LoginRequired({
   authedUser,
   users,
   dispatch,
+  location,
   children,
 }) {
   if (users[authedUser] === undefined) {
-    dispatch(replace('/signin'));
+    dispatch(redirectSignin(location));
     return (
       <div>404 error todo</div>
     );
@@ -33,6 +36,7 @@ LoginRequired.propTypes = {
   authedUser: authedUserPropType,
   users: usersPropType.isRequired,
   dispatch: dispatchPropType.isRequired,
+  location: locationPropType.isRequired,
   children: childrenPropType.isRequired,
 };
 
@@ -40,10 +44,17 @@ LoginRequired.defaultProps = {
   authedUser: null,
 };
 
-function mapStateToProps({ authedUser, users }) {
+function mapStateToProps({
+  authedUser,
+  users,
+  router: {
+    location,
+  },
+}) {
   return {
     authedUser,
     users,
+    location,
   };
 }
 

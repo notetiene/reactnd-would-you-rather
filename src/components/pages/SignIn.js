@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { push } from 'connected-react-router';
 import {
   Button,
   Form,
@@ -9,6 +8,7 @@ import {
   Label,
 } from 'semantic-ui-react';
 
+import { redirectUndo } from '../../actions/redirect';
 import Body from '../layout/Body';
 import logo from '../../logo.svg';
 import UserSelector from '../user/UserSelector';
@@ -16,6 +16,7 @@ import { setAuthedUser } from '../../actions/authedUser';
 import {
   authedUserPropType,
   dispatchPropType,
+  redirectPropType,
 } from '../common';
 
 class SignIn extends Component {
@@ -66,10 +67,11 @@ class SignIn extends Component {
     const {
       authedUser,
       dispatch,
+      redirect,
     } = this.props;
 
     if (authedUser !== null) {
-      dispatch(push('/'));
+      dispatch(redirectUndo(redirect));
     }
 
     return (
@@ -128,15 +130,17 @@ class SignIn extends Component {
 SignIn.propTypes = {
   dispatch: dispatchPropType.isRequired,
   authedUser: authedUserPropType,
+  redirect: redirectPropType.isRequired,
 };
 
 SignIn.defaultProps = {
   authedUser: null,
 };
 
-function mapStateToProps({ authedUser }) {
+function mapStateToProps({ authedUser, redirect }) {
   return {
     authedUser,
+    redirect,
   };
 }
 

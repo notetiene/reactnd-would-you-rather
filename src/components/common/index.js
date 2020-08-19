@@ -117,3 +117,14 @@ export const onSubmitPropType = PropTypes.func;
 
 export const choicePropType = PropTypes.oneOf(['a', 'b', false]);
 export const loadingPropType = PropTypes.bool;
+export const locationPropType = PropTypes.shape({
+  pathname: PropTypes.string,
+  search: PropTypes.string,
+  hash: PropTypes.string,
+  key: PropTypes.string,
+  query: PropTypes.shape({}),
+});
+
+export const redirectPropType = PropTypes.exact({
+  lastLocation: PropTypes.string,
+});
