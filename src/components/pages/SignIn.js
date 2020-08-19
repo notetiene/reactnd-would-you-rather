@@ -39,12 +39,12 @@ class SignIn extends Component {
   handleSubmit = () => {
     const {
       props: {
-        dispatch,
+        doSetAuthedUser,
       },
     } = this;
 
     this.setState((oldState) => {
-      dispatch(setAuthedUser(oldState.user));
+      doSetAuthedUser(oldState.user);
       // Add timeout
 
       return {
@@ -66,12 +66,12 @@ class SignIn extends Component {
 
     const {
       authedUser,
-      dispatch,
+      doRedirectUndo,
       redirect,
     } = this.props;
 
     if (authedUser !== null) {
-      dispatch(redirectUndo(redirect));
+      doRedirectUndo(redirect);
     }
 
     return (
@@ -128,7 +128,8 @@ class SignIn extends Component {
 }
 
 SignIn.propTypes = {
-  dispatch: dispatchPropType.isRequired,
+  doSetAuthedUser: dispatchPropType.isRequired,
+  doRedirectUndo: dispatchPropType.isRequired,
   authedUser: authedUserPropType,
   redirect: redirectPropType.isRequired,
 };
@@ -144,4 +145,7 @@ function mapStateToProps({ authedUser, redirect }) {
   };
 }
 
-export default connect(mapStateToProps)(SignIn);
+export default connect(mapStateToProps, {
+  doSetAuthedUser: setAuthedUser,
+  doRedirectUndo: redirectUndo,
+})(SignIn);
