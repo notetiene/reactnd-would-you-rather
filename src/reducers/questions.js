@@ -1,3 +1,4 @@
+// [[file:~/dev/repositories/react/reactnd-would-you-rather/docs/README.org::*questions][questions:1]]
 import {
   RECEIVE_QUESTIONS,
   ANSWER_QUESTION,
@@ -11,11 +12,17 @@ export default function questionsReducer(state = {}, action) {
   } = action;
 
   switch (action.type) {
+// questions:1 ends here
+
+// [[file:~/dev/repositories/react/reactnd-would-you-rather/docs/README.org::*questions][questions:2]]
     case RECEIVE_QUESTIONS:
       return {
         ...state,
         ...questions,
       };
+// questions:2 ends here
+
+// [[file:~/dev/repositories/react/reactnd-would-you-rather/docs/README.org::*questions][questions:3]]
     case ANSWER_QUESTION:
       return {
         ...state,
@@ -30,6 +37,9 @@ export default function questionsReducer(state = {}, action) {
           },
         },
       };
+// questions:3 ends here
+
+// [[file:~/dev/repositories/react/reactnd-would-you-rather/docs/README.org::*questions][questions:4]]
     case ADD_NEW_QUESTION:
       return {
         ...state,
@@ -51,3 +61,4 @@ export default function questionsReducer(state = {}, action) {
       return state;
   }
 }
+// questions:4 ends here

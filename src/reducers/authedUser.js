@@ -1,3 +1,4 @@
+// [[file:~/dev/repositories/react/reactnd-would-you-rather/docs/README.org::*authedUser][authedUser:1]]
 import {
   SET_AUTHED_USER,
   SIGNOUT_AUTHED_USER,
@@ -13,3 +14,4 @@ export default function authedUser(state = null, action) {
       return state;
   }
 }
+// authedUser:1 ends here

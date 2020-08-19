@@ -1,3 +1,4 @@
+// [[file:~/dev/repositories/react/reactnd-would-you-rather/docs/README.org::*shared][shared:1]]
 import { getInitialData } from '../util/api';
 import {
   receiveUsers,
@@ -20,3 +21,4 @@ export default function handleInitialData() {
       dispatch(loadingEnd());
     });
 }
+// shared:1 ends here

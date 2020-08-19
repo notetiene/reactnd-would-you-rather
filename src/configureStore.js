@@ -1,3 +1,4 @@
+// [[file:~/dev/repositories/react/reactnd-would-you-rather/docs/README.org::*=configureStore.js=][=configureStore.js=:1]]
 import { createBrowserHistory } from 'history';
 import { createStore } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
@@ -27,3 +28,4 @@ export default function configureStore(preloadedState) {
     persistor,
   };
 }
+// =configureStore.js=:1 ends here

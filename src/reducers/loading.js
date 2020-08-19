@@ -1,3 +1,4 @@
+// [[file:~/dev/repositories/react/reactnd-would-you-rather/docs/README.org::*loading][loading:1]]
 import {
   LOADING_START,
   LOADING_END,
@@ -13,3 +14,4 @@ export default function loading(state = null, action) {
       return state;
   }
 }
+// loading:1 ends here

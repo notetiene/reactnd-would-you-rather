@@ -1,3 +1,4 @@
+// [[file:~/dev/repositories/react/reactnd-would-you-rather/docs/README.org::*Reducers][Reducers:1]]
 import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
 import authedUser from './authedUser';
@@ -14,3 +15,4 @@ export default (history) => combineReducers({
   router: connectRouter(history),
   redirect,
 });
+// Reducers:1 ends here

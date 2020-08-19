@@ -1,3 +1,4 @@
+// [[file:~/dev/repositories/react/reactnd-would-you-rather/docs/README.org::*questions][questions:1]]
 import {
   saveQuestionAnswer,
   saveQuestion,
@@ -45,3 +46,4 @@ export function addQuestion(info) {
       });
   };
 }
+// questions:1 ends here
