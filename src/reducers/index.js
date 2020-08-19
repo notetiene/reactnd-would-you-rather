@@ -4,6 +4,7 @@ import authedUser from './authedUser';
 import users from './users';
 import questions from './questions';
 import loading from './loading';
+import redirect from './redirect';
 
 export default (history) => combineReducers({
   authedUser,
@@ -11,4 +12,5 @@ export default (history) => combineReducers({
   questions,
   loading,
   router: connectRouter(history),
+  redirect,
 });
