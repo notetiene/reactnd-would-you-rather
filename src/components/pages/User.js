@@ -1,33 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {
-  Card,
-  Grid,
-  Icon,
-  Image,
-  Label,
-  Table,
-} from 'semantic-ui-react';
 
 import LoginRequired from '../authentication/LoginRequired';
 import PageNotFound from './PageNotFound';
 import Body from '../layout/Body';
+import UserCard from '../user/UserCard';
 import {
-  usersPropType,
-  matchPropType,
+  usersAddRank,
+  userPropType,
 } from '../common';
 
-function User(props) {
-  const {
-    match,
-    users,
-  } = props;
-
-  const {
-    id,
-  } = match.params;
-
-  if (users[id] === undefined) {
+function User({
+  user,
+}) {
+  if (user === undefined) {
     return (
       <LoginRequired>
         <PageNotFound />
@@ -40,93 +26,36 @@ function User(props) {
       <Body
         compact
       >
-        <Card
-          fluid
-        >
-          <Card.Content>
-            <Grid
-              columns="equal"
-              divided
-            >
-              <Grid.Column
-                width={4}
-              >
-                <Label
-                  corner="left"
-                >
-                  <Icon
-                    name="trophy"
-                    color="grey"
-                  />
-                </Label>
-                <Image
-                  src="/avatars/user10.svg"
-                  size="small"
-                  circular
-                  bordered
-                />
-              </Grid.Column>
-              <Grid.Column>
-                <Card.Header
-                  as="h2"
-                >
-                  Tyler McGinnis
-                </Card.Header>
-                <Card.Description>
-                  <Table
-                    basic="very"
-                  >
-                    <Table.Body>
-                      <Table.Row>
-                        <Table.Cell>Answered questions</Table.Cell>
-                        <Table.Cell><b>2</b></Table.Cell>
-                      </Table.Row>
-                      <Table.Row>
-                        <Table.Cell>Created questions</Table.Cell>
-                        <Table.Cell><b>2</b></Table.Cell>
-                      </Table.Row>
-                    </Table.Body>
-                  </Table>
-                </Card.Description>
-              </Grid.Column>
-              <Grid.Column
-                width={4}
-              >
-                <Card
-                  fluid
-                >
-                  <h4
-                    className="card-title score-title"
-                  >
-                    Score
-                  </h4>
-                  <Card.Content>
-                    <Label
-                      color="teal"
-                      size="huge"
-                      circular
-                    >
-                      4
-                    </Label>
-                  </Card.Content>
-                </Card>
-              </Grid.Column>
-            </Grid>
-          </Card.Content>
-        </Card>
+        <UserCard
+          name={user.id}
+          avatarURL={user.avatarURL}
+          answeredQuestions={user.answeredQuestions}
+          createdQuestions={user.createdQuestions}
+          rank={user.rank}
+          link={`/user:${user.id}`}
+          key={user.id}
+        />
       </Body>
     </LoginRequired>
   );
 }
 
 User.propTypes = {
-  users: usersPropType.isRequired,
-  match: matchPropType.isRequired,
+  user: userPropType.isRequired,
 };
 
-function mapStateToProps({ users }) {
+function mapStateToProps({ users, questions }, { match: { params: { id } } }) {
+  if (users[id] === undefined) {
+    return {
+      user: undefined,
+    };
+  }
+
+  const usersWithRank = usersAddRank(users, questions);
+  const userWithScore = usersWithRank.find((el) => el.id === id);
+
   return {
-    users,
+    user: userWithScore,
   };
 }
 
