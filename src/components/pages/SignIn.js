@@ -28,12 +28,16 @@ class SignIn extends Component {
     };
   }
 
-  handleUserSelected = (ev, data) => {
-    this.setState((oldState) => ({
-      ...oldState,
-      user: data.value,
-      submitDisabled: data.value === '',
-    }));
+  componentDidUpdate() {
+    const {
+      authedUser,
+      doRedirectUndo,
+      redirect,
+    } = this.props;
+
+    if (authedUser !== null) {
+      doRedirectUndo(redirect);
+    }
   }
 
   handleSubmit = () => {
@@ -53,6 +57,14 @@ class SignIn extends Component {
     });
   }
 
+  handleUserSelected = (ev, data) => {
+    this.setState((oldState) => ({
+      ...oldState,
+      user: data.value,
+      submitDisabled: data.value === '',
+    }));
+  }
+
   render() {
     const {
       submitDisabled,
@@ -63,16 +75,6 @@ class SignIn extends Component {
       handleUserSelected,
       handleSubmit,
     } = this;
-
-    const {
-      authedUser,
-      doRedirectUndo,
-      redirect,
-    } = this.props;
-
-    if (authedUser !== null) {
-      doRedirectUndo(redirect);
-    }
 
     return (
       <Body>

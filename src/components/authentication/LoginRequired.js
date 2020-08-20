@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { redirectSignin } from '../../actions/redirect';
@@ -18,8 +18,13 @@ function LoginRequired({
   location,
   children,
 }) {
+  useEffect(() => {
+    if (users[authedUser] === undefined) {
+      dispatch(redirectSignin(location));
+    }
+  });
+
   if (users[authedUser] === undefined) {
-    dispatch(redirectSignin(location));
     return (
       <div>404 error todo</div>
     );
