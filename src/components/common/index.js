@@ -20,7 +20,7 @@ export const usersPropType = PropTypes.oneOfType([
   PropTypes.oneOf([null]),
 ]);
 
-export const rankedUsersPropType = PropTypes.arrayOf(PropTypes.exact({
+export const rankedUserPropType = PropTypes.exact({
   id: idPropType,
   name: namePropType,
   avatarURL: avatarURLPropType,
@@ -30,7 +30,9 @@ export const rankedUsersPropType = PropTypes.arrayOf(PropTypes.exact({
   createdQuestions: PropTypes.number,
   score: scorePropType,
   rank: rankPropType,
-}));
+});
+
+export const rankedUsersPropType = PropTypes.arrayOf(rankedUserPropType);
 
 export const authedUserPropType = PropTypes.oneOfType([
   PropTypes.string,
