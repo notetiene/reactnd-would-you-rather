@@ -116,7 +116,10 @@ export const pushPropType = PropTypes.func;
 export const onSubmitPropType = PropTypes.func;
 
 export const choicePropType = PropTypes.oneOf(['a', 'b', false]);
-export const loadingPropType = PropTypes.bool;
+export const loadingPropType = PropTypes.oneOfType([
+  PropTypes.bool,
+  PropTypes.oneOf([null]),
+]);
 export const locationPropType = PropTypes.shape({
   pathname: PropTypes.string,
   search: PropTypes.string,

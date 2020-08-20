@@ -38,12 +38,13 @@ Body.propTypes = {
   compact: PropTypes.bool,
   noSegment: PropTypes.bool,
   children: childrenPropType.isRequired,
-  loading: loadingPropType.isRequired,
+  loading: loadingPropType,
 };
 
 Body.defaultProps = {
   compact: false,
   noSegment: false,
+  loading: false,
 };
 
 function mapStateToProps({ loading }) {
