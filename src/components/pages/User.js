@@ -41,7 +41,11 @@ function User({
 }
 
 User.propTypes = {
-  user: userPropType.isRequired,
+  user: userPropType,
+};
+
+User.defaultProps = {
+  user: null,
 };
 
 function mapStateToProps({ users, questions }, { match: { params: { id } } }) {
