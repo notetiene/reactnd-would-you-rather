@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
 import {
   Button,
@@ -12,89 +12,64 @@ import {
   onSubmitPropType,
 } from '../common';
 
-class OptionChoice extends Component {
-  constructor(...args) {
-    super(...args);
-
-    this.state = {
-      choice: null,
-    };
-  }
-
-  handleOnChooseA = (event) => {
+function OptionChoice({
+  optionA,
+  optionB,
+  onSubmit,
+}) {
+  const [choice, setChoice] = useState(null);
+  const handleOnChooseA = (event) => {
     event.preventDefault();
-
-    this.setState(() => ({
-      choice: 'a',
-    }));
-  }
-
-  handleOnChooseB = (event) => {
+    setChoice('a');
+  };
+  const handleOnChooseB = (event) => {
     event.preventDefault();
-
-    this.setState(() => ({
-      choice: 'b',
-    }));
-  }
-
-  handleOnSubmit = (event) => {
-    const { onSubmit } = this.props;
-    const { choice } = this.state;
-
+    setChoice('b');
+  };
+  const handleOnSubmit = (event) => {
     event.preventDefault();
     onSubmit(choice);
-  }
+  };
 
-  render() {
-    const {
-      optionA,
-      optionB,
-    } = this.props;
-
-    const {
-      choice,
-    } = this.state;
-
-    return (
-      <Form
-        onSubmit={this.handleOnSubmit}
+  return (
+    <Form
+      onSubmit={handleOnSubmit}
+    >
+      <Form.Field
+        onClick={handleOnChooseA}
+        className="option-choice"
       >
-        <Form.Field
-          onClick={this.handleOnChooseA}
-          className="option-choice"
-        >
-          <Radio
-            label={optionA.text}
-            value="a"
-            name="choice"
-            checked={choice === 'a'}
-          />
-        </Form.Field>
-        <Form.Field
-          onClick={this.handleOnChooseB}
-          className="option-choice"
-        >
-          <Radio
-            label={optionB.text}
-            value="b"
-            name="choice"
-            checked={choice === 'b'}
-          />
-        </Form.Field>
-        <Divider
-          hidden
+        <Radio
+          label={optionA.text}
+          value="a"
+          name="choice"
+          checked={choice === 'a'}
         />
-        <Button
-          type="submit"
-          color="teal"
-          disabled={choice === null}
-          fluid
-        >
-          Submit
-        </Button>
-      </Form>
-    );
-  }
+      </Form.Field>
+      <Form.Field
+        onClick={handleOnChooseB}
+        className="option-choice"
+      >
+        <Radio
+          label={optionB.text}
+          value="b"
+          name="choice"
+          checked={choice === 'b'}
+        />
+      </Form.Field>
+      <Divider
+        hidden
+      />
+      <Button
+        type="submit"
+        color="teal"
+        disabled={choice === null}
+        fluid
+      >
+        Submit
+      </Button>
+    </Form>
+  );
 }
 
 OptionChoice.propTypes = {
