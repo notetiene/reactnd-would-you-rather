@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 
@@ -12,98 +12,59 @@ import {
   authedUserPropType,
 } from '../common';
 
-class NewQuestion extends Component {
-  constructor(...args) {
-    super(...args);
+function NewQuestion({
+  doAddQuestion,
+  doPush,
+  author,
+}) {
+  const [option1, setOption1] = useState('');
+  const [option2, setOption2] = useState('');
 
-    this.state = {
-      option1: '',
-      option2: '',
-    };
-  }
-
-  handleOptionOneChange = (ev) => {
-    const { value } = ev.target;
-
-    this.setState(() => ({
-      option1: value,
-    }));
-  }
-
-  handleOptionTwoChange = (ev) => {
-    const { value } = ev.target;
-
-    this.setState(() => ({
-      option2: value,
-    }));
-  }
-
-  isValidQuestion = () => {
-    const {
-      option1,
-      option2,
-    } = this.state;
-
-    return option1.trim() !== '' && option2.trim() !== '';
-  }
-
-  handleSubmission = () => {
-    const {
-      doAddQuestion,
-      doPush,
-      author,
-    } = this.props;
-
-    const {
-      option1,
-      option2,
-    } = this.state;
-
+  const isValidQuestion = () => option1.trim() !== '' && option2.trim() !== '';
+  const handleSubmission = () => {
     doAddQuestion({
       optionOneText: option1,
       optionTwoText: option2,
       author,
     });
     doPush('/');
-  }
+  };
+  const handleOptionOneChange = (ev) => {
+    const { value } = ev.target;
 
-  render() {
-    const {
-      option1,
-      option2,
-    } = this.state;
+    setOption1(value);
+  };
+  const handleOptionTwoChange = (ev) => {
+    const { value } = ev.target;
 
-    const {
-      handleOptionOneChange,
-      handleOptionTwoChange,
-    } = this;
+    setOption2(value);
+  };
 
-    const options = [{
-      placeholder: 'Enter Option One Text Here',
-      value: option1,
-      onChange: handleOptionOneChange,
-      key: 'option1',
-    }, {
-      placeholder: 'Enter Option Two Text Here',
-      value: option2,
-      onChange: handleOptionTwoChange,
-      key: 'option2',
-    }];
+  const options = [{
+    placeholder: 'Enter Option One Text Here',
+    value: option1,
+    onChange: handleOptionOneChange,
+    key: 'option1',
+  }, {
+    placeholder: 'Enter Option Two Text Here',
+    value: option2,
+    onChange: handleOptionTwoChange,
+    key: 'option2',
+  }];
 
-    return (
-      <LoginRequired>
-        <Body>
-          <OptionOrOptionForm
-            title="Create New Question"
-            subtitle="Would you rather …"
-            options={options}
-            isValidForm={() => !this.isValidQuestion()}
-            onSubmit={this.handleSubmission}
-          />
-        </Body>
-      </LoginRequired>
-    );
-  }
+  return (
+    <LoginRequired>
+      <Body>
+        <OptionOrOptionForm
+          title="Create New Question"
+          subtitle="Would you rather …"
+          options={options}
+          isValidForm={() => !isValidQuestion()}
+          onSubmit={handleSubmission}
+        />
+      </Body>
+    </LoginRequired>
+  );
 }
 
 NewQuestion.propTypes = {
