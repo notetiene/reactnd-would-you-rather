@@ -4,7 +4,10 @@ import { connect } from 'react-redux';
 import LoginRequired from '../authentication/LoginRequired';
 import Body from '../layout/Body';
 import UserCard from '../user/UserCard';
-import { rankedUsersPropType } from '../common';
+import {
+  rankedUsersPropType,
+  usersAddRank,
+} from '../common';
 
 function Leaderboard({
   users,
@@ -34,44 +37,11 @@ Leaderboard.propTypes = {
   users: rankedUsersPropType.isRequired,
 };
 
-function userScore(userID, questions) {
-  const createdQuestions = questions.reduce(
-    (accumulator, question) => (accumulator + (question.author === userID ? 1 : 0)),
-    0,
-  );
-  const answeredQuestions = questions.reduce(
-    (accumulator, question) => {
-      const answered = question.optionOne.votes.includes(userID)
-            || question.optionTwo.votes.includes(userID);
-
-      return accumulator + answered;
-    },
-    0,
-  );
+function mapStateToProps({ users, questions }) {
+  const usersWithRank = usersAddRank(users, questions);
 
   return {
-    answeredQuestions,
-    createdQuestions,
-    score: answeredQuestions + createdQuestions,
-  };
-}
-
-function mapStateToProps({ questions, users }) {
-  const questionList = Object.values(questions);
-  const userWithScore = Object.values(users).map((user) => ({
-    ...user,
-    ...userScore(user.id, questionList),
-  })).sort((a, b) => b.score - a.score);
-
-  // Remove duplicates
-  const scores = [...new Set(userWithScore.map((user) => user.score))];
-  const userWithRank = userWithScore.map((user) => ({
-    ...user,
-    rank: user.score > 0 ? scores.indexOf(user.score) + 1 : 0,
-  }));
-
-  return {
-    users: userWithRank,
+    users: usersWithRank,
   };
 }
 

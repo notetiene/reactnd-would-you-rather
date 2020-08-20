@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { usersAddRank } from './users';
 
 export const namePropType = PropTypes.string;
 export const avatarURLPropType = PropTypes.string;
@@ -133,3 +134,7 @@ export const locationPropType = PropTypes.shape({
 export const redirectPropType = PropTypes.exact({
   lastLocation: PropTypes.string,
 });
+
+export {
+  usersAddRank,
+};
