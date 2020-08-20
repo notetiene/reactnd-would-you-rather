@@ -7,18 +7,16 @@ export const idPropType = PropTypes.string;
 export const scorePropType = PropTypes.number;
 export const rankPropType = PropTypes.number;
 
-export const userPropType = PropTypes.objectOf(
-  PropTypes.exact({
-    id: idPropType,
-    name: namePropType,
-    avatarURL: avatarURLPropType,
-    answers: PropTypes.objectOf(PropTypes.string),
-    questions: PropTypes.arrayOf(PropTypes.string),
-  }),
-);
+export const userPropType = PropTypes.exact({
+  id: idPropType,
+  name: namePropType,
+  avatarURL: avatarURLPropType,
+  answers: PropTypes.objectOf(PropTypes.string),
+  questions: PropTypes.arrayOf(PropTypes.string),
+});
 
 export const usersPropType = PropTypes.oneOfType([
-  userPropType,
+  PropTypes.objectOf(userPropType),
   PropTypes.oneOf([null]),
 ]);
 
