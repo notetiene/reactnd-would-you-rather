@@ -7,7 +7,7 @@ import Body from '../layout/Body';
 import UserCard from '../user/UserCard';
 import {
   usersAddRank,
-  userPropType,
+  rankedUserPropType,
 } from '../common';
 
 function User({
@@ -41,7 +41,7 @@ function User({
 }
 
 User.propTypes = {
-  user: userPropType,
+  user: rankedUserPropType,
 };
 
 User.defaultProps = {
